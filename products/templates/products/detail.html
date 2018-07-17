@@ -7,7 +7,9 @@
 <body>
 {{ object.title }} <br>
 {{ object.description }} <br>
+{% if object.image.url is not None %}
 <img src="{{ object.image.url }}" class="img-fluid">
+{% endif %}
 
 </body>
 </html>
