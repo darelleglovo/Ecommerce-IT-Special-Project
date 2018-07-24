@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{{ object.title }} <br>
-{{ object.description }} <br>
-{% if object.image.url is not None %}
-<img src="{{ object.image.url }}" class="img-fluid">
-{% endif %}
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    {{ object.title }} <br>
+    {{ object.description }} <br>
+    {% if object.image.url is not None %}
+    <img src="{{ object.image.url }}" class="img-fluid">
+    {% endif %}
+{% endblock %}
