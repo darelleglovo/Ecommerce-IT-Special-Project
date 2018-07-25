@@ -1,9 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ object.title }} <br>
-    {{ object.description }} <br>
-    {% if object.image.url is not None %}
-    <img src="{{ object.image.url }}" class="img-fluid">
-    {% endif %}
+    <div class="ui centered grid">
+        <div class="four wide column">
+            {% if object.image.url is not None %}
+                <img class="ui medium rounded image" src="{{ object.image.url }}">
+            {% endif %}
+        </div>
+        <div class="nine wide column">
+            <h1 class="ui header">{{ object.title }}
+                <div class="sub header">₱{{ object.price }}.00
+
+                </div>
+                <div class="sub header">
+                    <div class="field">
+                        <div class="ui spinner input">
+                            <input type="text" id="number" name="number" placeholder="Number" value="1"
+                                   style="width: 50px;"/>
+                            <div class="ui vertical buttons">
+                                <button type="button" class="ui spinner up icon button">
+                                    <i class="chevron up icon"></i>
+                                </button>
+                                <button type="button" class="ui spinner down icon button">
+                                    <i class="chevron down icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ui basic button">
+                        <i class="shop icon"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </h1>
+            <h4 class="ui horizontal divider header">
+                <i class="tag icon"></i>
+                Description
+            </h4>
+            <p>{{ object.description|linebreaks }}</p>
+            <h4 class="ui horizontal divider header">
+                <i class="bar chart icon"></i>
+                Specifications
+            </h4>
+            <table class="ui definition table">
+                <tbody>
+                <tr>
+                    <td class="two wide column">Size</td>
+                    <td>1" x 2"</td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td>6 ounces</td>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td>Yellowish</td>
+                </tr>
+                <tr>
+                    <td>Odor</td>
+                    <td>Not Much Usually</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 {% endblock %}

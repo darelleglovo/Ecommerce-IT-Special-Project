@@ -13,7 +13,9 @@ urlpatterns = [
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
 ]
-
+admin.site.site_header = "Enghel's Collection Admin"
+admin.site.site_title = "Enghel's Collection Admin"
+admin.site.index_title = "Welcome to Einghel's Collection"
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

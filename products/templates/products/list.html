@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-        {% for obj in object_list %}
-            <div class="col">
-                {% include 'products/snippets/card.html' with instance=obj %}
+<div class="ui grid main" style="margin-left: 60px; margin-right: 60px;">
+    <div class="doubling four column relaxed row">
+          {% for obj in object_list %}
+            <div class="column">
+              {% include 'products/snippets/card.html' with instance=obj %}
             </div>
-        {% endfor %}
-        </div>
+          {% endfor %}
     </div>
+</div>
+    <style>
+            @media only screen and (max-width: 600px) {
+          .main {
+            margin:0px 0;
+          }
+        }
+    </style>
+
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#        {% for obj in object_list %}#}
+{#            <div class="col">#}
+{#                {% include 'products/snippets/card.html' with instance=obj %}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#        </div>#}
+{#    </div>#}
 
 
 

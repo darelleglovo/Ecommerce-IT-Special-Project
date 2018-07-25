@@ -1,4 +1,35 @@
 {% load static %} <!-- template tag.. -->
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> <!-- to allow this to work -->
+{#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"#}
+{#      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> <!-- to allow this to work -->#}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.css">
+<style>
+    body {
+    padding: 1em;
+}
+
+.ui.spinner.input input {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.ui.spinner.input .button.disabled {
+    cursor: not-allowed;
+}
+.ui.spinner.input .buttons .button {
+    background-color: #fff;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-left: none;
+    padding: .2em .3em .3em;
+    height: 21px;
+}
+.ui.spinner.input .spinner.up.button {
+    border-bottom: none;
+    border-top-left-radius: 0;
+}
+.ui.spinner.input .spinner.down.button {
+    border-bottom-left-radius: 0;
+}
+.ui.spinner.input .button .icon {
+  margin: 0;
+}
+</style>
