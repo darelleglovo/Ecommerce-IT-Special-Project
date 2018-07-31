@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="ui centered grid">
+    <div class="ui centered stackable grid">
         <div class="four wide column">
             {% if object.image.url is not None %}
                 <img class="ui medium rounded image" src="{{ object.image.url }}">

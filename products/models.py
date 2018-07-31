@@ -43,10 +43,33 @@ class ProductManager(models.Manager):
             return qs.first()
         return None
 
+class Category(models.Model):
+    category = models.CharField(max_length=120, unique=True)
+
+    def __str__(self):
+        return self.category
+    def __unicode__(self):
+        return self.category
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    subcategory = models.CharField(max_length = 400)
+
+    def __str__(self):
+        return self.subcategory
+    def __unicode__(self):
+        return self.subcategory
+
 class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     featured = models.BooleanField(default=False)
