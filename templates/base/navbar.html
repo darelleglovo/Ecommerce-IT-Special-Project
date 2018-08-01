@@ -9,7 +9,7 @@
 <div class="ui container" style="background-color: black;">
     <div class="ui large secondary menu" style="background-color: white;">
         <a class="item"><h2>Einghel's Collection</h2></a>
-        <a class="item">Home</a>
+        <a class="item" href="{% url 'products:home' %}">Home</a>
         <a class="item">About us</a>
         <a class="item">Testimonials</a>
         <a class="item">Contact us</a>
@@ -31,11 +31,11 @@
 <hr>
 <div class="ui sticky container">
     <div class="ui fluid large secondary six item menu" style="background-color: white;">
-        <a class="item">Make up</a>
-        <a class="item">Skin care</a>
-        <a class="item">Hair</a>
-        <a class="item">Bath and body</a>
-        <a class="item">Supplements</a>
+        <a class="item" href="/products/category/make-up/">Make up</a>
+        <a class="item" href="/products/category/skin-care/">Skin care</a>
+        <a class="item" href="/products/category/hair/">Hair</a>
+        <a class="item" href="/products/category/bath-and-body/">Bath and body</a>
+        <a class="item" href="/products/category/supplements/">Supplements</a>
         <a class="item">Others</a>
 
     </div>

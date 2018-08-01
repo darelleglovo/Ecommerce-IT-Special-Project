@@ -45,12 +45,15 @@ class ProductManager(models.Manager):
         return None
 
 class Category(models.Model):
-    name = models.CharField(max_length=120, unique=True)
+    title = models.CharField(max_length=120, unique=True)
+    slug = models.SlugField(blank=True)
 
     def __str__(self):
-        return self.name
+        return self.title
     def __unicode__(self):
-        return self.name
+        return self.title
+    def get_absolute_url(self):
+        return reverse('products:list_products_by_category', args=[self.slug])
 
     class Meta:
         verbose_name = 'Category'
@@ -58,12 +61,13 @@ class Category(models.Model):
 
 class Subcategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length = 400)
+    title = models.CharField(max_length = 400)
+    slug = models.SlugField(blank=True)
 
     def __str__(self):
-        return self.name
+        return self.title
     def __unicode__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Subcategory'
@@ -101,8 +105,21 @@ class Product(models.Model):
     def __unicode__(self):
         return self.title
 
+# Slug generators
 def product_pre_save_reciever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
 pre_save.connect(product_pre_save_reciever, sender=Product)
+
+def category_pre_save_reciever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(category_pre_save_reciever, sender=Category)
+
+def subcategory_pre_save_reciever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(subcategory_pre_save_reciever, sender=Subcategory)

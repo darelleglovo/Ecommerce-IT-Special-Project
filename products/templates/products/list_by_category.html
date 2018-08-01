@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h1>{{ category.name }}</h1>
     <div class="ui container">
         <div class="ui stackable two column grid">
             <div class="three wide column">
@@ -31,7 +32,7 @@
             <div class="twelve wide column">
                 <div class="ui grid">
                     <div class="doubling three column relaxed row">
-                          {% for obj in object_list %}
+                          {% for obj in products %}
                             <div class="column">
                               {% include 'products/snippets/card.html' with instance=obj %}
                             </div>

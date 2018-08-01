@@ -17,7 +17,6 @@ class ProductFeaturedDetailView(DetailView):
         request = self.request
         return Product.objects.all().featured()
 
-
 class ProductListView(ListView):
     #queryset = Product.objects.all()
     template_name = "products/list.html"
@@ -106,3 +105,16 @@ def product_detail_view(request, pk=None, *args, **kwargs):
     #print(context)
     return render(request, "products/detail.html", context)
 
+def list_products_by_category(request, category_slug):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    subcategories = Subcategory.objects.all()
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+    template = "products/list_by_category.html"
+    context = {'categories': categories,
+               'products': products,
+               'subcategories':subcategories,
+               }
+    return render(request, template, context)
