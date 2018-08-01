@@ -3,8 +3,30 @@
 {% block content %}
     <div class="ui container">
         <div class="ui stackable two column grid">
-            <div class="four wide column">
-                <button class="ui button fluid"></button>
+            <div class="three wide column">
+                <div class="ui vertical menu">
+                    <div class="item">
+                        <div class="ui icon input">
+                            <input type="text" placeholder="Search...">
+                            <i class="search link icon"></i>
+                        </div>
+                    </div>
+                    {% for obj in categories %}
+                    <div class="item">
+                        <div class="header">{{ obj.name }}</div>
+                        <div class="menu">
+                            {% for sub in subcategories %}
+                                {% if sub.category|slugify == obj.name|slugify %}
+                                    <a class="item">{{ sub.name}}</a>
+                                {% endif %}
+
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="twelve wide column">
                 <div class="ui grid">

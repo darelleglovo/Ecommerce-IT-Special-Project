@@ -3,6 +3,7 @@ import os
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
+from smart_selects.db_fields import ChainedForeignKey
 
 from .utils import unique_slug_generator
 
@@ -44,32 +45,46 @@ class ProductManager(models.Manager):
         return None
 
 class Category(models.Model):
-    category = models.CharField(max_length=120, unique=True)
+    name = models.CharField(max_length=120, unique=True)
 
     def __str__(self):
-        return self.category
+        return self.name
     def __unicode__(self):
-        return self.category
+        return self.name
 
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
-class SubCategory(models.Model):
+class Subcategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    subcategory = models.CharField(max_length = 400)
+    name = models.CharField(max_length = 400)
 
     def __str__(self):
-        return self.subcategory
+        return self.name
     def __unicode__(self):
-        return self.subcategory
+        return self.name
+
+    class Meta:
+        verbose_name = 'Subcategory'
+        verbose_name_plural = 'Subcategories'
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    subcategory = ChainedForeignKey(
+        Subcategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+        )
     price = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     featured = models.BooleanField(default=False)

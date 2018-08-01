@@ -1,6 +1,11 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from . import forms
+
+def logout_page(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect("/login")
 
 def login_page(request):
     form = forms.LoginForm(request.POST or None)
