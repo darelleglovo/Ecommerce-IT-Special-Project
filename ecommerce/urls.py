@@ -9,11 +9,12 @@ urlpatterns = [
     path('', views.home_page),
     path('about/', views.about_page),
     path('contact/', views.contact_page),
-    path('login/', views.login_page),
+    path('login/', views.login_page, name='login'),
     path('logout/', views.logout_page),
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
     path('chaining/', include('smart_selects.urls')),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]
 admin.site.site_header = "Enghel's Collection Admin"
 admin.site.site_title = "Enghel's Collection Admin"

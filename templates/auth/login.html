@@ -9,3 +9,4 @@
 {% if user.is_authenticated %}
     <button onclick="window.location.href='/logout'" class="btn btn-default">Logout</button>
 {% endif %}
+<a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
