@@ -118,3 +118,17 @@ def list_products_by_category(request, category_slug):
                'subcategories':subcategories,
                }
     return render(request, template, context)
+
+def list_products_by_subcategory(request, subcategory_slug):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    subcategories = Subcategory.objects.all()
+    if subcategory_slug:
+        subcategory = get_object_or_404(Subcategory, slug=subcategory_slug)
+        products = products.filter(subcategory=subcategory)
+    template = "products/list_by_subcategory.html"
+    context = {'categories': categories,
+               'products': products,
+               'subcategories':subcategories,
+               }
+    return render(request, template, context)

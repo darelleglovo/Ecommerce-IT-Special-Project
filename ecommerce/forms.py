@@ -26,5 +26,15 @@ class ContactForm(forms.Form):
         return email
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+            "_icon": "user",
+            "_align": "left"
+        }
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            "_icon": "lock",
+            "_align": "left"
+        }
+    ))

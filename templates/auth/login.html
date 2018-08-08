@@ -1,12 +1,48 @@
+{% extends 'base.html' %}
+{% load semanticui %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <div class="ui two column centered  stackable grid">
 
-{% if user.is_authenticated %}
-    Hello {{ user.first_name }}
-{% endif %}
-<form method="POST"> {% csrf_token %}
-    {{ form }}
-    <button type="submit" class="btn btn-default">Login</button>
-</form>
-{% if user.is_authenticated %}
-    <button onclick="window.location.href='/logout'" class="btn btn-default">Logout</button>
-{% endif %}
-<a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+        <div class="four wide column" style="background-color: #00b5ad">
+            <h1 style="color: white">Welcome to Einghel's Collection</h1>
+        </div>
+        <div class="four wide column" style="background-color: #ffb9b9">
+            <div class="ui raised segment">
+
+                {% if user.is_authenticated %}
+                    <h3 class="ui header">Hello {{ user.first_name }}</h3>
+                {% else %}
+                    <p class="ui" style="font-size: 20px;">Login to <span class="productname" style="font-size: 40px; padding-left: 5px;"> <span style="color: #11D7D8;">Einghel's</span><span style="color: #FD9AB6;"> Collection</span></span> </p>
+                {% endif %}
+                <form class="ui form" method="POST"> {% csrf_token %}
+                    {#    {{ form }}#}
+
+                    {% render_form form %}
+                    {% for message in messages %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    <button class="ui teal fluid button" type="submit">Login</button>
+                </form>
+
+                <h4 class="ui horizontal divider">
+                    OR
+                </h4>
+                <button class="ui google plus labeled icon fluid button" onclick="location.href='{% url 'social:begin' 'google-oauth2' %}';">
+                    <i class="google icon"></i>
+                    Sign in with Google
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

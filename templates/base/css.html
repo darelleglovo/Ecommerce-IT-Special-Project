@@ -3,58 +3,82 @@
 {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"#}
 {#      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> <!-- to allow this to work -->#}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.css">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
 <style>
     body {
-    padding: 1em;
-}
+        padding: 1em;
+    }
 
-.ui.spinner.input input {
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-}
-.ui.spinner.input .button.disabled {
-    cursor: not-allowed;
-}
-.ui.spinner.input .buttons .button {
-    background-color: #fff;
-    border: 1px solid rgba(34, 36, 38, 0.15);
-    border-left: none;
-    padding: .2em .3em .3em;
-    height: 21px;
-}
-.ui.spinner.input .spinner.up.button {
-    border-bottom: none;
-    border-top-left-radius: 0;
-}
-.ui.spinner.input .spinner.down.button {
-    border-bottom-left-radius: 0;
-}
-.ui.spinner.input .button .icon {
-  margin: 0;
-}
-.Site {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-    padding: 0px;
-}
+    .ui.spinner.input input {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
 
-.Site-content {
-  flex: 1;
-}
+    .ui.spinner.input .button.disabled {
+        cursor: not-allowed;
+    }
+
+    .ui.spinner.input .buttons .button {
+        background-color: #fff;
+        border: 1px solid rgba(34, 36, 38, 0.15);
+        border-left: none;
+        padding: .2em .3em .3em;
+        height: 21px;
+    }
+
+    .ui.spinner.input .spinner.up.button {
+        border-bottom: none;
+        border-top-left-radius: 0;
+    }
+
+    .ui.spinner.input .spinner.down.button {
+        border-bottom-left-radius: 0;
+    }
+
+    .ui.spinner.input .button .icon {
+        margin: 0;
+    }
+
+    .Site {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        padding: 0px;
+    }
+
+    .Site-content {
+        flex: 1;
+    }
+
     footer.footer {
-  text-align: center;
-  margin-top: 70px;
-  border-top: 1px solid #E5E5E5;
-}
+        text-align: center;
+        margin-top: 70px;
+        border-top: 1px solid #E5E5E5;
+    }
 
- .ui.footer.segment {
-    margin: 5em 0em 0em;
-    padding: 5em 0em;
-  }
+    .ui.footer.segment {
+        margin: 5em 0em 0em;
+        padding: 5em 0em;
+    }
 
     hr {
-  margin-left: 0;
-  margin-right: 0;
-}
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .mainlogo {
+        font-family: Amontillados;
+        font-size: 50px;
+    }
+    .productname {
+        font-family: Amontillados;
+    }
+
+    @font-face {
+        font-family: 'Amontillados';
+        src: url('{% static 'fonts/Amontillados.ttf' %}');
+    }
+
+
+
 </style>

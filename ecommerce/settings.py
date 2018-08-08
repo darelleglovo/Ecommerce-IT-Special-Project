@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #dependecies/packages/libraries
     'smart_selects',
     'social_django',
+    'semanticuiforms',
 
     #apps
     'products',

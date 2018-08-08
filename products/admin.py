@@ -5,7 +5,7 @@ from social_django.models import Association, Nonce, UserSocialAuth
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'category', 'slug']
+    list_display = ['__str__', 'category', 'subcategory', 'slug']
     list_filter = ['category']
     class Meta:
         model = Product

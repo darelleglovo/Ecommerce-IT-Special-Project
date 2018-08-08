@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from . import forms
 
@@ -25,10 +26,13 @@ def login_page(request):
             login(request, user)
             # Redirect to a success page.
             #context['form'] = forms.LoginForm()
-            return redirect("/login")
+            return redirect("/products")
         else:
             # Return an 'invalid login' error message.
             print("Error")
+            messages.error(request, 'username or password not correct')
+
+            return redirect('login')
 
     return render(request, "auth/login.html", context)
 

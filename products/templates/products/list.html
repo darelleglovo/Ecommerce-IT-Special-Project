@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block nav_menu %}
+    {% include 'base/nav_menu.html'%}
+{% endblock %}
 
 {% block content %}
     <div class="ui container">
@@ -17,7 +20,7 @@
                         <div class="menu">
                             {% for sub in subcategories %}
                                 {% if sub.category|slugify == obj.title|slugify %}
-                                    <a class="item">{{ sub.title }}</a>
+                                    <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>
                                 {% endif %}
 
 
