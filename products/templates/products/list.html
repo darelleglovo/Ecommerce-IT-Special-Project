@@ -4,32 +4,11 @@
 {% endblock %}
 
 {% block content %}
+    <h1>{{ category.name }}</h1>
     <div class="ui container">
         <div class="ui stackable two column grid">
             <div class="three wide column">
-                <div class="ui vertical menu">
-                    <div class="item">
-                        <div class="ui icon input">
-                            <input type="text" placeholder="Search...">
-                            <i class="search link icon"></i>
-                        </div>
-                    </div>
-                    {% for obj in categories %}
-                    <div class="item">
-                        <div class="header">{{ obj.title }}</div>
-                        <div class="menu">
-                            {% for sub in subcategories %}
-                                {% if sub.category|slugify == obj.title|slugify %}
-                                    <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>
-                                {% endif %}
-
-
-                            {% endfor %}
-
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+                {% include 'base/side_menu.html' %}
             </div>
             <div class="twelve wide column">
                 <div class="ui grid">

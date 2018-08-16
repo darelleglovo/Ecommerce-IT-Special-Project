@@ -23,7 +23,8 @@
                 </div>
             </div>
             {% if instance.image %}
-                <img src="{{ instance.image.url }}">
+                {% load thumbnail %}
+                <img src="{% thumbnail instance.image 640x640 box=instance.cropping crop detail %}">
             {% endif %}
         </div>
         <div class="content">

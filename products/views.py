@@ -32,9 +32,8 @@ class ProductListView(ListView):
         context = super(ProductListView, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['subcategories'] = Subcategory.objects.all()
+        context['prod_count'] = Product.objects.all().count()
         return context
-
-
 
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -60,7 +59,6 @@ class ProductDetailSlugView(DetailView):
             instance = qs.first()
         except:
             raise Http404("Uhhhmm")
-
         return instance
 
 class ProductDetailView(DetailView):
@@ -109,6 +107,7 @@ def list_products_by_category(request, category_slug):
     categories = Category.objects.all()
     products = Product.objects.all()
     subcategories = Subcategory.objects.all()
+    prod_count = Product.objects.all().count()
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
@@ -116,6 +115,7 @@ def list_products_by_category(request, category_slug):
     context = {'categories': categories,
                'products': products,
                'subcategories':subcategories,
+               'prod_count': prod_count,
                }
     return render(request, template, context)
 
@@ -123,6 +123,7 @@ def list_products_by_subcategory(request, subcategory_slug):
     categories = Category.objects.all()
     products = Product.objects.all()
     subcategories = Subcategory.objects.all()
+    prod_count = Product.objects.all().count()
     if subcategory_slug:
         subcategory = get_object_or_404(Subcategory, slug=subcategory_slug)
         products = products.filter(subcategory=subcategory)
@@ -130,5 +131,6 @@ def list_products_by_subcategory(request, subcategory_slug):
     context = {'categories': categories,
                'products': products,
                'subcategories':subcategories,
+               'prod_count': prod_count,
                }
     return render(request, template, context)

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from smart_selects.db_fields import ChainedForeignKey
-
+from image_cropping.fields import ImageRatioField
 from .utils import unique_slug_generator
 
 def get_filename_ext(filepath):
@@ -91,6 +91,7 @@ class Product(models.Model):
         )
     price = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    cropping = ImageRatioField('image', '640x640')
     featured = models.BooleanField(default=False)
     active =  models.BooleanField(default=True)
 

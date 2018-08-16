@@ -6,11 +6,12 @@
 {#    <a class="item">Help</a>#}
 {#  </div>#}
 {#</div>#}
-
+{% load static %}
 <div class="ui container" style="background-color: black;">
     <div class="ui large secondary menu" style="background-color: white;">
-        <a class="item"><p class="mainlogo"><span style="color: #11D7D8;">Einghel's </span> <span style="color: #FD9AB6;">Collection</span></p></a>
-        <a class="item" href="{% url 'products:home' %}">Home</a>
+{#        <a class="item"><p class="mainlogo"><span style="color: #11D7D8;">Einghel's </span> <span style="color: #FD9AB6;">Collection</span></p></a>#}
+        <a class="item"style="padding: 0px;"><img src="{% static 'img/bruh.png' %}" style="width: 165px; height: 100px;"></a>
+        <a class="item" href="{% url 'products:home' %}">Products</a>
         <a class="item">About us</a>
         <a class="item">Testimonials</a>
         <a class="item">Contact us</a>
@@ -21,10 +22,15 @@
                     Logout
                 </a>
             {% else %}
-                <a class="ui item" href="/login">
+                <a class="ui item" href="{% url 'login' %}">
                     Login
                 </a>
             {% endif %}
+            <a class="item">
+                <i class="shopping cart icon"></i>
+                <div class="floating ui teal label">2</div>
+
+            </a>
 
         </div>
     </div>

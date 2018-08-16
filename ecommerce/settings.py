@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'smart_selects',
     'social_django',
     'semanticuiforms',
+    'easy_thumbnails',
+    'image_cropping',
 
     #apps
     'products',
@@ -151,3 +153,10 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
+
+# SUI_ERROR_WRAPPER = "<div class=\"ui blue pointing prompt label\">%(message)s</div>"
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
