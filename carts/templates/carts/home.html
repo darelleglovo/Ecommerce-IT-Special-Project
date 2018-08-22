@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Cart</h1>
+    {% if cart.products.exists %}
+        <div class="ui container">
+            <table class="ui celled striped table">
+                <thead>
+                <tr>
+                    <th colspan="3">
+                        Cart
+                    </th>
+                </tr>
+                <tr>
+                    <th class="collapsing">#</th>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in cart.products.all %}
+                <tr>
+                    <td class="collapsing">{{ forloop.counter }}</td>
+                    <td><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
+                    <td>₱{{ product.price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Subtotal: </b>₱{{ cart.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total: </b>₱{{ cart.total }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+    <p class="lead">Cart is empty</p>
+    {% endif %}
+
+{% endblock %}

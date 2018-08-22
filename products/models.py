@@ -6,6 +6,15 @@ from django.urls import reverse
 from smart_selects.db_fields import ChainedForeignKey
 from image_cropping.fields import ImageRatioField
 from .utils import unique_slug_generator
+from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
+
+
+class Role(Group):
+    class Meta:
+        proxy = True
+        app_label = 'auth'
+        verbose_name = _('Role')
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
