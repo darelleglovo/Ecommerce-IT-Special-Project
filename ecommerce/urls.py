@@ -5,8 +5,6 @@ from django.contrib import admin
 from django.urls import path, include # Django 2.0
 from . import views
 
-
-
 urlpatterns = [
     path('', views.home_page),
     path('about/', views.about_page),
@@ -15,8 +13,7 @@ urlpatterns = [
     path('logout/', views.logout_page),
     path('register/', views.register_page, name='register'),
     path('redirect/', views.registered, name='registered'),
-    path('', include('products.urls')),
-    path('', include('carts.urls')),# Django 2.0
+    path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
     path('chaining/', include('smart_selects.urls')),
     path('auth/', include('social_django.urls', namespace='social')),

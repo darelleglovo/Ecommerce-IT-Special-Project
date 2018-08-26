@@ -63,12 +63,10 @@ def registered(request):
     return render(request, "registered.html")
 
 def home_page(request):
-    #print(request.session.get("first_name", "Unknown"))
     context = {
         "title": "hello World!"
     }
-    #return render(request, "home_page.html", {})
-    return redirect('products:home')
+    return render(request, "home_page.html", context)
 
 def about_page(request):
     return render(request, "home_page.html", {})

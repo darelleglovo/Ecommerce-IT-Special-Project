@@ -2,6 +2,7 @@
 {% block nav_menu %}
     {% include 'base/nav_menu.html'%}
 {% endblock %}
+
 {% block content %}
     <br>
     <div class="ui centered stackable grid">
@@ -30,9 +31,10 @@
                             </div>
                         </div>
                     </div>
-                    {% include 'products/snippets/update-cart.html' with product=object cart=cart %}
-
-
+                    <button class="ui basic button">
+                        <i class="shop icon"></i>
+                        Add to cart
+                    </button>
                 </div>
             </h1>
             <h4 class="ui horizontal divider header">
