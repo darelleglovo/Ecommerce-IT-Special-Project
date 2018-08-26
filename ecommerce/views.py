@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from . import forms
-# git test
+
 def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
