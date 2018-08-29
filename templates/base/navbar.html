@@ -26,9 +26,9 @@
                     Login
                 </a>
             {% endif %}
-            <a class="item">
+            <a class="item" href="{% url 'carts:cart' %}">
                 <i class="shopping cart icon"></i>
-                <div class="floating ui teal label">2</div>
+                <div id="cart-count-badge" class="floating ui teal label"></div>
 
             </a>
 

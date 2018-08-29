@@ -94,12 +94,20 @@ class Product(models.Model):
     cropping = ImageRatioField('image', '640x640')
     featured = models.BooleanField(default=False)
     active =  models.BooleanField(default=True)
+    # inventory = models.DecimalField()
 
     objects = ProductManager() # Product.objects.(something)
 
     def get_absolute_url(self):
         #return "/products/{slug}/".format(slug=self.slug)
         return reverse("products:detail", kwargs={"slug": self.slug}) # app_name:name on urls.py
+
+    def add_to_cart(self):
+        return "{0}?item={1}&qty=1".format(reverse("carts:cart"), self.id) # string manipulation
+
+    def remove_from_cart(self, instance):
+        instance.cart.update_subtotal()
+        return "{0}?item={1}&qty=1&delete=True".format(reverse("carts:cart"), self.id) # string manipulation
 
     def __str__(self):
         return self.title

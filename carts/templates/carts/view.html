@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+{#    {{ object }}#}
+{#    {{ object.cartitem_set.all }}#}
+{#    {% for item in object.cartitem_set.all %}#}
+{#        {{ item }}#}
+{#        {{ item.quantity }}#}
+{##}
+{#    {% endfor %}#}
+    {% if object.cartitem_set.exists %}
+        <div class="ui container">
+            <table class="ui celled striped table">
+                <thead>
+                <tr>
+                    <th colspan="5">
+                        Cart
+                    </th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th class="collapsing">#</th>
+                    <th colspan="1">Product Name</th>
+                    <th>Qty</th>
+                    <th>Item Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in object.cartitem_set.all %}
+                <tr>
+                    <td class="collapsing" data-tooltip="Remove" data-inverted=""><i class="red times icon" onclick="location.href='{{ item.remove }}'"></i></td>
+                    <td class="collapsing">{{ forloop.counter }}</td>
+                    <td><a href="{{ item.get_absolute_url }}">{{ item }}</a></td>
+                    <td class="collapsing">{{ item.quantity }}</td>
+                    <td>₱{{ item.line_item_total }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"></td>
+                    <td><b>Subtotal: </b>₱{{ object.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td><b>Total: </b>₱{{ object.total }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+    <p class="lead">Cart is empty</p>
+    {% endif %}
+
+{% endblock %}

@@ -29,6 +29,7 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Subcategory, SubcategoryAdmin)
 
+admin.site.unregister(Group)
 admin.site.unregister(Association)
 admin.site.unregister(Nonce)
 #admin.site.unregister(Group)

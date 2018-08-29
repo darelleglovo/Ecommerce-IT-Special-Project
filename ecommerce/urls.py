@@ -11,6 +11,7 @@ urlpatterns = [
     path('contact/', views.contact_page),
     path('login/', views.login_page, name='login'),
     path('logout/', views.logout_page),
+    path('', include('carts.urls')),
     path('register/', views.register_page, name='register'),
     path('redirect/', views.registered, name='registered'),
     path('', include('products.urls')), # Django 2.0

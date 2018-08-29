@@ -79,11 +79,36 @@ class RegisterForm(forms.Form):
             "_align": "left"
         }
     ))
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if len(password) < 8:
+            raise forms.ValidationError("Password should be 8 characters or longer.")
+        return password
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if first_name.isalpha():
+            return first_name
+        else:
+            raise forms.ValidationError("Letters only.")
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if last_name.isalpha():
+            return last_name
+        else:
+            raise forms.ValidationError("Letters only.")
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
+        if len(username) < 5:
+            raise forms.ValidationError("Username should have 5 characters or more.")
+
         qs = User.objects.filter(username=username)
         if qs.exists():
             raise forms.ValidationError("Username is taken")
+
         return username
 
     def clean_email(self):
