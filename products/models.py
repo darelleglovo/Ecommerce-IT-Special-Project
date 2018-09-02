@@ -5,7 +5,7 @@ from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from smart_selects.db_fields import ChainedForeignKey
 from image_cropping.fields import ImageRatioField
-from .utils import unique_slug_generator
+from ecommerce.utils import unique_slug_generator
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 

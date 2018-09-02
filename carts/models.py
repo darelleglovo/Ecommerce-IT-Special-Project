@@ -9,7 +9,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey('Cart', on_delete=models.DO_NOTHING)
     item = models.ForeignKey('products.Product', on_delete=models.DO_NOTHING)
     quantity = models.PositiveIntegerField(default=1)
-    line_item_total = models.DecimalField(max_digits=10, decimal_places=2)
+    line_item_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
 
 
     def __str__(self):
@@ -36,6 +36,35 @@ def cart_item_post_save_reciever(sender, instance, *args, **kwargs):
 
 post_save.connect(cart_item_post_save_reciever, sender=CartItem)
 
+
+
+
+class CartManager(models.Manager):
+
+    def new_or_get(self, request):
+        cart_id = request.session.get("cart_id", None)
+        qs = self.get_queryset().filter(id=cart_id) # self = Cart
+        if qs.count() == 1:
+            new_obj = False
+            print("cart id exist")  # cart exist or created
+            cart_obj = qs.first()
+            if request.user.is_authenticated and cart_obj.user is None:
+                cart_obj.user = request.user
+                cart_obj.save()
+        else:
+            cart_obj = Cart.objects.new(user=request.user)  # or created | "objects.new" custom method on models.py
+            new_obj = True
+            request.session['cart_id'] = cart_obj.id
+        return cart_obj, new_obj
+
+    def new(self, user=None):
+        user_obj = None
+        if user is not None:
+            if user.is_authenticated:
+                user_obj = user
+        return self.model.objects.create(user=user_obj)
+
+
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.DO_NOTHING)
     items = models.ManyToManyField('products.Product', through=CartItem)
@@ -43,6 +72,8 @@ class Cart(models.Model):
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     subtotal = models.DecimalField(max_digits=50, decimal_places=2, null=True)
     total = models.DecimalField(max_digits=50, decimal_places=2, null=True)
+
+    objects = CartManager()
 
     def __str__(self):
         return str(self.id)
