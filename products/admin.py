@@ -9,8 +9,9 @@ from image_cropping import ImageCroppingMixin
 
 
 class ProductAdmin(ImageCroppingMixin, admin.ModelAdmin):
-    list_display = ['__str__', 'category', 'subcategory', 'slug']
+    list_display = ['__str__', 'category', 'subcategory', 'slug', 'inventory']
     list_filter = ['category']
+    search_fields = ['title']
     class Meta:
         model = Product
 

@@ -6,6 +6,9 @@ from django.urls import reverse
 from smart_selects.db_fields import ChainedForeignKey
 from image_cropping.fields import ImageRatioField
 from .utils import unique_slug_generator
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -94,7 +97,12 @@ class Product(models.Model):
     cropping = ImageRatioField('image', '640x640')
     featured = models.BooleanField(default=False)
     active =  models.BooleanField(default=True)
-    # inventory = models.DecimalField()
+    inventory = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+
+    def clean_inventory(self):
+        if self.inventory < 0:
+            raise ValidationError('Draft entries may not have a publication date.')
+        return
 
     objects = ProductManager() # Product.objects.(something)
 

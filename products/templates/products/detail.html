@@ -33,6 +33,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <p style="padding: 5px">{{ product.inventory }} stocks left.</p>
                         </div>
 {#                        {% if object in items.all %}#}
 {#                            <button id="submit-btn" class="ui basic negative button" type="submit">#}
@@ -50,6 +51,9 @@
                 </form>
             </h1>
         <div id="jquery-message" class="ui green message"></div>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
 
             <h4 class="ui horizontal divider header">
                 <i class="tag icon"></i>
@@ -99,7 +103,7 @@
                 success: function(data) {
                     $("#jquery-message").text("Added to cart");
                     $("#jquery-message").show();
-                    updateCatItemCount()
+                    updateCartItemCount()
                 },
                 error: function (response, error) {
                     $("#add-form").submit()

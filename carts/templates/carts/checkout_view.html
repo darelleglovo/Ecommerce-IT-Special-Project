@@ -1,5 +1,34 @@
 {% extends "base.html" %}
-
+{% load semanticui %}
 {% block content %}
-    {{ user_auth }}
+    <br>
+    <div class="ui container">
+    <div class="ui grid">
+        <div class="eight wide column">
+            <h1>Continue as Guest</h1>
+        </div>
+        <div class="eight wide column">
+            <h1>Login to continue</h1>
+            <form class="ui form" method="POST" action=""> {% csrf_token %}
+
+                {% render_form login_form %}
+
+                <input type="hidden" name="next" value="{{ next_url }}">
+                <button class="ui teal fluid button" type="submit">Login</button>
+            </form>
+            <p>Need account? <a href="{% url 'register' %}">Register</a></p>
+            <h4 class="ui horizontal divider">
+                OR
+            </h4>
+            <button class="ui google plus labeled icon fluid button" onclick="location.href='{% url 'social:begin' 'google-oauth2' %}';">
+                <i class="google icon"></i>
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+    </div>
+
+
+
+
 {% endblock %}

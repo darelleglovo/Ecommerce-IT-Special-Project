@@ -1,7 +1,9 @@
 from django.views.generic.base import View
+from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 
 from django.apps import apps
 
@@ -42,7 +44,7 @@ class CartView(SingleObjectMixin, View):
 
     def get(self, request, *args, **kwargs):
         cart = self.get_object()
-
+        out_of_stock = False
         item_id = request.GET.get("item")
         delete_item = request.GET.get("delete", False) # False default
         item_added = False
@@ -55,16 +57,36 @@ class CartView(SingleObjectMixin, View):
             except:
                 raise Http404
             cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
+            item_instance.inventory
             if created:
-                item_added = True
-            if delete_item:
+                if  item_instance.inventory <= 0:
+                    qty = 0
+                    out_of_stock = True
+                else:
+                    print("created > ",  item_instance.inventory)
+                    item_added = True
+                    item_instance.inventory -= qty
+                    cart_item.quantity = qty
+                    cart_item.save()
+            elif delete_item:
+                item_instance.inventory += cart_item.quantity
                 cart_item.delete()
+                print("deleted > ", item_instance.inventory)
             else:
-                cart_item.quantity = qty
-                cart_item.save()
+                if  item_instance.inventory <= 0:
+                    qty = 0
+                    out_of_stock = True
+                else:
+                    print( item_instance.inventory, qty, cart_item.quantity)
+                    item_instance.inventory -= (qty - cart_item.quantity)
+                    cart_item.quantity = qty
+                    cart_item.save()
+            item_instance.full_clean()
+            item_instance.save()
+            #print(item_instance.inventory)
 
         if request.is_ajax():
-            return JsonResponse({"deleted": delete_item, "item_added": item_added})
+            return JsonResponse({"deleted": delete_item, "item_added": item_added, "out_of_stock": out_of_stock})
 
         context = {
             "object": self.get_object()
@@ -72,22 +94,7 @@ class CartView(SingleObjectMixin, View):
         template = self.template_name
         return render(request, template, context)
 
-class CheckoutView(DetailView):
-    model = Cart
-    template_name = "carts/checkout_view.html"
 
-    def get_object(self, *args, **kwargs):
-        cart_id = self.request.session.get("cart_id")
-        if cart_id == None:
-            return redirect("carts:cart")
-        cart = Cart.objects.get(id=cart_id)
-        return cart
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CheckoutView, self).get_context_data(*args, **kwargs)
-        if not self.request.user.is_authenticated:
-            context["user_auth"] = False
-        return context
 
 
 
