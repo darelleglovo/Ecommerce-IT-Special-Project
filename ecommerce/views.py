@@ -3,62 +3,6 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from . import forms
 
-def logout_page(request):
-    if request.user.is_authenticated:
-        logout(request)
-        return redirect("/login")
-
-def login_page(request):
-    if request.user.is_authenticated:
-        return redirect('/products')
-    else:
-        form = forms.LoginForm(request.POST or None)
-        context = {
-            "form": form
-        }
-        print(request.user.is_authenticated)
-        if form.is_valid():
-            print(form.cleaned_data)
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
-            print(user)
-            print(request.user.is_authenticated)
-            if user is not None:
-                print(request.user.is_authenticated)
-                login(request, user)
-                # Redirect to a success page.
-                #context['form'] = forms.LoginForm()
-                return redirect("/products")
-            else:
-                # Return an 'invalid login' error message.
-                print("Error")
-                messages.error(request, 'username or password not correct')
-
-                return redirect('login')
-
-        return render(request, "auth/login.html", context)
-
-User = get_user_model()
-def register_page(request):
-    if request.user.is_authenticated:
-        return redirect('/products')
-    else:
-        form = forms.RegisterForm(request.POST or None)
-        context = {
-            "form": form
-        }
-        if form.is_valid():
-            print(form.cleaned_data)
-            first_name = form.cleaned_data.get("first_name")
-            last_name = form.cleaned_data.get("last_name")
-            username = form.cleaned_data.get("username")
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            new_user = User.objects.create_user(username, email, password, first_name=first_name, last_name=last_name)
-            return redirect('login')
-        return render(request, "auth/register.html", context)
-
 def registered(request):
     return render(request, "registered.html")
 
