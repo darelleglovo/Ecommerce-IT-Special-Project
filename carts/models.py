@@ -90,7 +90,7 @@ class Cart(models.Model):
 def do_total_reciever(sender, instance, *args, **kwargs):
     try:
         subtotal = instance.subtotal
-        total = subtotal + 10
+        total = subtotal + 0
         instance.total = total
     except:
         pass

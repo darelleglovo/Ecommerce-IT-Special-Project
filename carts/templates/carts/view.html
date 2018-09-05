@@ -8,19 +8,27 @@
 {#        {{ item.quantity }}#}
 {##}
 {#    {% endfor %}#}
+    <br>
     {% if object.cartitem_set.exists %}
-        <div class="ui container">
+        <div class="ui centered grid">
+        <div class="ui nine wide column">
             <table class="ui celled striped table">
                 <thead>
                 <tr>
-                    <th colspan="5">
-                        Cart
+                    <th colspan="6">
+                        <h3 class="ui header">
+                        <i class="shopping cart icon"></i>
+                        <div class="content">
+                            Cart
+                        </div>
+                    </h3>
                     </th>
                 </tr>
                 <tr>
                     <th></th>
                     <th class="collapsing">#</th>
                     <th colspan="1">Product Name</th>
+                    <th>Price</th>
                     <th>Qty</th>
                     <th>Item Total</th>
                 </tr>
@@ -31,24 +39,27 @@
                     <td class="collapsing" data-tooltip="Remove" data-inverted=""><i class="red times icon" onclick="location.href='{{ item.remove }}'"></i></td>
                     <td class="collapsing">{{ forloop.counter }}</td>
                     <td><a href="{{ item.get_absolute_url }}">{{ item }}</a></td>
+                    <td class="collapsing">₱{{ item.item.price }}</td>
                     <td class="collapsing">{{ item.quantity }}</td>
                     <td>₱{{ item.line_item_total }}</td>
                 </tr>
                 {% endfor %}
                 <tr>
-                    <td colspan="4"></td>
+                    <td colspan="5"></td>
                     <td><b>Subtotal: </b>₱{{ object.subtotal }}</td>
                 </tr>
+{#                <tr>#}
+{#                    <td colspan="5"></td>#}
+{#                    <td><b>Total: </b>₱{{ object.total }}</td>#}
+{#                </tr>#}
                 <tr>
-                    <td colspan="4"></td>
-                    <td><b>Total: </b>₱{{ object.total }}</td>
-                </tr>
-                <tr>
-                    <td colspan="4"></td>
-                    <td><a href="{% url 'carts:checkout' %}">Checkout</a></td>
+                    <td colspan="5"></td>
+                    <td><a href="{% url 'carts:checkout' %}">Proceed to Checkout</a></td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+
         </div>
 
     {% else %}

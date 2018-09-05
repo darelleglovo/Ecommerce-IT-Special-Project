@@ -14,6 +14,8 @@ class ProductAdmin(ImageCroppingMixin, admin.ModelAdmin):
     search_fields = ['title']
     class Meta:
         model = Product
+        verbose_name = 'asd'
+        verbose_name_plural = 'asdasdasd'
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'slug']
