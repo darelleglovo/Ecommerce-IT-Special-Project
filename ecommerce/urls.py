@@ -11,6 +11,7 @@ urlpatterns = [
     path('contact/', views.contact_page),
     path('', include('accounts.urls')),
     path('', include('carts.urls')),
+    path('', include('addresses.urls')),
     path('redirect/', views.registered, name='registered'),
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),

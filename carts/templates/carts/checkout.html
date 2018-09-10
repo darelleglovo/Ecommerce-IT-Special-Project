@@ -3,53 +3,85 @@
 
 {% block content %}
     {{ object.order_id }} -- {{ object.cart }}
-
+<br>
 {% if not billing_profile %}
     <div class="ui centered grid">
         <div class="ui six wide column">
-            <h2>Login</h2>
+{#            <h2>Login</h2>#}
             {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
         </div>
-        <div class="ui six wide column">
-            <h2>Continue as Guest</h2>
-            {% url 'accounts:guest_register' as guest_register_url %}
-            {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
-        </div>
+{#        <div class="ui six wide column">#}
+{#            <h2>Continue as Guest</h2>#}
+{#            {% url 'accounts:guest_register' as guest_register_url %}#}
+{#            {% include 'accounts/snippets/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}#}
+{#        </div>#}
     </div>
 {% else %}
     <div class="ui centered grid">
-    <div class="ui four wide column">
-        <table class="ui celled striped table">
-            <thead>
-            <tr>
-                <th colspan="2">
-                    <h3 class="ui header">
-                        <i class="cart arrow down icon"></i>
-                        <div class="content">
-                            Checkout - {{ object.order_id|upper }}
-                        </div>
-                    </h3>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Cart Total:</td>
-                <td>₱{{ object.cart.total }}</td>
-            </tr>
-            <tr>
-                <td>Shipping Total:</td>
-                <td>₱{{ object.shipping_total }}</td>
-            </tr>
-            <tr>
-                <td>Order Total:</td>
-                <td>₱{{ object.total }}</td>
-            </tr>
-            </tbody>
-        </table>
+    {% if not object.shipping_address %}
+        <div class="ui six wide column">
+            <h2 class="ui  header">
+                <i class="shipping fast icon"></i>
+                <div class="content">
+                    Shipping Address
+                </div>
+            </h2>
+            {% url 'addresses:checkout_address_create' as checkout_address_create %}
+            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
+        </div>
+    {% elif not object.billing_address %}
+        <div class="ui six wide column">
+            <h2 class="ui  header">
+                <i class="shipping fast icon"></i>
+                <div class="content">
+                    Billing Address
+                </div>
+            </h2>
+            {% url 'addresses:checkout_address_create' as checkout_address_create %}
+            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+        </div>
+    {% else %}
+
+        <div class="ui four wide column">
+            <table class="ui celled striped table">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        <h3 class="ui header">
+                            <i class="cart arrow down icon"></i>
+                            <div class="content">
+                                Finalize Checkout - {{ object.order_id|upper }}
+                            </div>
+                        </h3>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Cart Total:</td>
+                    <td>₱{{ object.cart.total }}</td>
+                </tr>
+                <tr>
+                    <td>Shipping Total:</td>
+                    <td>₱{{ object.shipping_total }}</td>
+                </tr>
+                <tr>
+                    <td>Order Total:</td>
+                    <td>₱{{ object.total }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="right aligned">
+                        <form class="form" method="POST" action=""> {% csrf_token %}
+                            <button class="ui button" type="submit">Checkout</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
     </div>
 
-    </div>
 {% endif %}
 
 
