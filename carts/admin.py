@@ -14,4 +14,4 @@ class CartAdmin(admin.ModelAdmin):
         model = Cart
 
 admin.site.register(Cart, CartAdmin)
-#admin.site.register(CartItem)
+admin.site.register(CartItem)
