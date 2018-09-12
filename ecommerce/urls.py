@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('carts.urls')),
     path('', include('addresses.urls')),
+    path('', include('billing.urls')),
     path('redirect/', views.registered, name='registered'),
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
