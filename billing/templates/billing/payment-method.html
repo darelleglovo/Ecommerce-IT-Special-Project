@@ -5,19 +5,11 @@
     <div class="ui centered grid">
         <div class="ui seven wide column">
             <br>
-            <form action="/charge" method="post" id="payment-form" data-token="{{ publish_key }}">
-                <div class="form-row">
-                    <h1>Add Payment Method</h1>
-                    <div id="card-element">
-                        <!-- A Stripe Element will be inserted here. -->
-                    </div>
+        <div class="stripe-payment-form" data-token="{{ publish_key }}" data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title="Add New Card">
 
-                    <!-- Used to display form errors. -->
-                    <div id="card-errors" role="alert"></div>
-                </div>
+        </div>
 
-                <button class="ui button primary" style="margin: 10px">Submit Payment</button>
-            </form>
+
         </div>
     </div>
 
@@ -26,9 +18,35 @@
 {% endblock %}
 
 {% block javascript %}
+
+
     <script>
+
+    var stripeFormModule = $(".stripe-payment-form")
+    var stripeModuleToken = stripeFormModule.attr("data-token")
+    var stripeModuleNextUrl = stripeFormModule.attr("data-next-url")
+    var stripeModuleBtnTitle = stripeFormModule.attr("data-btn-title") || "Add card"
+
+    var stripeTemplate = $.templates("#stripeTemplate")
+    var stripeTemplateDataContext = {
+        publishKey: stripeModuleToken,
+        nextUrl: stripeModuleNextUrl,
+        btnTitle: stripeModuleBtnTitle
+    }
+    var stripeTemplateHtml = stripeTemplate.render(stripeTemplateDataContext)
+    stripeFormModule.html(stripeTemplateHtml)
+
+    var paymentForm = $(".payment-form")
+    if (paymentForm.length > 1) {
+        alert("Only one payment form is allowed per page")
+        paymentForm.css('display', 'none') // get rid
+    }
+    else if (paymentForm.length == 1) {// if exists
+
+        var pubKey = paymentForm.attr('data-token')
+        var nextUrl = paymentForm.attr('data-next-url')
         // Create a Stripe client.
-        var stripe = Stripe('pk_test_rILfT84BLIkg02QiRTcXHz5H');
+        var stripe = Stripe(pubKey);
 
         // Create an instance of Elements.
         var elements = stripe.elements();
@@ -80,13 +98,52 @@
                     errorElement.textContent = result.error.message;
                 } else {
                     // Send the token to your server.
-                    stripeTokenHandler(result.token);
+                    stripeTokenHandler(nextUrl, result.token);
                 }
             });
         });
 
-        function stripeTokenHandler(token) {
-            console.log(token)
+        function redirectToNext(nextPath, timeoffset) {
+            if (nextPath){
+                 setTimeout(function(){
+                    window.location.href = nextPath
+                 }, timeoffset)
+            }
         }
+
+        function stripeTokenHandler(nextUrl, token) {
+            //console.log(token.id)
+            var paymentMethodEndpoint = '/billing/payment-method/create'
+            var data = {
+                'token': token.id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+            $.ajax({
+                data: data,
+                url: paymentMethodEndpoint,
+                method: "POST",
+                success: function(data){
+                    var successMsg = data.message || "Success! You card was added"
+                    card.clear()
+                    if (nextUrl){
+                        successMsg = successMsg + "<br/>Redirecting.."
+                    }
+                    if ($.alert){
+                        $.alert(successMsg)
+                    } else{
+                        alert(successMsg)
+                    }
+                    redirectToNext(nextUrl, 1500)
+
+                    //else {
+                    //    window.location.reload()
+                    //}
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
+        }
+    }
     </script>
 {% endblock %}

@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'addresses'
 ]
 
+STRIPE_SECRET_KEY = "sk_test_pFGDr0qx9NJOMp1jhrWueACt"
+STRIPE_PUB_KEY = 'pk_test_rILfT84BLIkg02QiRTcXHz5H'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

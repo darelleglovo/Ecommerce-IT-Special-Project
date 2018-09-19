@@ -5,16 +5,21 @@ ADDRESS_TYPES = (
     ('billing', 'Billing'),
     ('shipping', 'Shipping')
 )
+STATES = (
+    ('luzon', 'Luzon'),
+    ('visayas', 'Visayas'),
+    ('mindanao', 'Mindanao')
+)
 
 
 class Address(models.Model):
-    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.DO_NOTHING)
+    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
     address_type = models.CharField(max_length=120, choices=ADDRESS_TYPES)
     address_line_1 = models.CharField(max_length=120)
     address_line_2 = models.CharField(max_length=120, null=True, blank=True)
     city = models.CharField(max_length=120)
     country = models.CharField(max_length=120, default='Philippines')
-    state = models.CharField(max_length=120)
+    state = models.CharField(max_length=120, choices=STATES)
     postal_code = models.CharField(max_length=120)
 
     def __str__(self):

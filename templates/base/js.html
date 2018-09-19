@@ -16,6 +16,11 @@
 <!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>
 
+<!-- js render -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.90/jsrender.min.js"></script>
+{% include 'base/js_templates.html' %}
+{#<script src="{% static "js/ecommerce.main.js" %}"></script>#}
+
 <script>
     function updateCartItemCount(){
         var badge = $("#cart-count-badge");

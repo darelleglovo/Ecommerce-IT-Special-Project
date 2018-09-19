@@ -26,10 +26,10 @@ class OrderManager(models.Manager):
 
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
-    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.DO_NOTHING, null=True, blank=True)
-    shipping_address = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.DO_NOTHING, null=True, blank=True)
-    billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.DO_NOTHING, null=True, blank=True)
-    cart = models.ForeignKey('carts.Cart', on_delete=models.DO_NOTHING)
+    billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE, null=True, blank=True)
+    shipping_address = models.ForeignKey('addresses.Address', related_name='shipping_address', on_delete=models.CASCADE, null=True, blank=True)
+    billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.CASCADE, null=True, blank=True)
+    cart = models.ForeignKey('carts.Cart', on_delete=models.CASCADE)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     shipping_total = models.DecimalField(default=100, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
@@ -42,17 +42,28 @@ class Order(models.Model):
 
     def update_total(self):
         cart_total = self.cart.total
-        shipping_total = self.shipping_total
-        new_total = math.fsum([cart_total + shipping_total])
+        try:
+            state = str(self.shipping_address.state)
+            if state == "luzon":
+                self.shipping_total = 110
+            elif state == "visayas":
+                self.shipping_total = 160
+            elif state == "mindanao":
+                self.shipping_total = 210
+
+        except:
+            pass
+        new_total = math.fsum([cart_total + self.shipping_total])
         formatted_total = format(new_total, '.2f')
         self.total = formatted_total
+        print(self.total)
         self.save()
         return new_total
 
     def check_done(self):
         billing_profile = self.billing_profile
         shipping_address = self.shipping_address
-        billing_address = self.billing_address
+        billing_address = self.shipping_address
         total = self.total
         if billing_profile and shipping_address and billing_address and total > 0:
             return True
@@ -90,5 +101,6 @@ def post_save_order(sender, instance, created, *args, **kwargs):
     if created:
         print("updating")
         instance.update_total()
-
+    # print("updating")
+    # instance.update_total()
 post_save.connect(post_save_order, sender=Order)

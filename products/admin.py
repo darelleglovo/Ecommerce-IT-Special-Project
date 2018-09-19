@@ -7,11 +7,21 @@ from image_cropping import ImageCroppingMixin
 
 
 
+def make_active(modeladmin, request, queryset):
+    queryset.update(active=True)
+
+def make_inactive(modeladmin, request, queryset):
+    queryset.update(active=False)
+
+
+make_active.short_description = "Mark selected product as active"
+make_inactive.short_description = "Mark selected product as inactive"
 
 class ProductAdmin(ImageCroppingMixin, admin.ModelAdmin):
-    list_display = ['__str__', 'category', 'subcategory', 'slug', 'inventory']
+    list_display = ['__str__', 'category', 'subcategory', 'active', 'inventory']
     list_filter = ['category']
     search_fields = ['title']
+    actions = [make_active, make_inactive]
     class Meta:
         model = Product
         verbose_name = 'asd'
