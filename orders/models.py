@@ -10,7 +10,15 @@ from addresses.models import Address
 ORDER_STATUS_CHOICES = {
     ('created', 'Created'),
     ('paid', 'Paid'),
+    ('waiting_for_payment', 'Waiting for payment'),
+}
+ORDER_SHIPPING_STATUS_CHOICES = {
     ('shipped', 'Shipped'),
+    ('not_shipped', 'Not yet shipped'),
+}
+PAYMENT_TYPE_CHOICES = {
+    ('credit_card', 'Credit Card'),
+    ('bank_deposit', 'Bank Deposit'),
 }
 
 class OrderManager(models.Manager):
@@ -30,7 +38,9 @@ class Order(models.Model):
     shipping_address = models.ForeignKey('addresses.Address', related_name='shipping_address', on_delete=models.CASCADE, null=True, blank=True)
     billing_address = models.ForeignKey(Address, related_name='billing_address', on_delete=models.CASCADE, null=True, blank=True)
     cart = models.ForeignKey('carts.Cart', on_delete=models.CASCADE)
+    payment_type =  models.CharField(max_length=120, null=True, blank=True, choices=PAYMENT_TYPE_CHOICES)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
+    shipping_status = models.CharField(max_length=120, default='not_shipped', choices=ORDER_SHIPPING_STATUS_CHOICES)
     shipping_total = models.DecimalField(default=100, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
     active = models.BooleanField(default=True)

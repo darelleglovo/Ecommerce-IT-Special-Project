@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load semanticui %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <div class="ui two column centered  stackable grid">
+
+{#        <div class="four wide column" style="background-color: #00b5ad">#}
+{#            <h1 style="color: white">Welcome to Einghel's Collection</h1>#}
+{#        </div>#}
+        <div class="six wide column" style="background-color: #ffb9b9">
+            <div class="ui raised segment">
+
+
+                    <p class="ui" style="font-size: 20px;">Payment Confirmation</p>
+
+                <form class="ui form" method="POST"> {% csrf_token %}
+                    {#    {{ form }}#}
+
+                    {% render_form form %}
+                    {% for error in form.non_field_errors %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ error }}</p>
+                        </div>
+                    {% endfor %}
+                    {% for message in messages %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    <button class="ui teal fluid button" type="submit">Submit</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.utils.http import is_safe_url
+from . import forms
 
 import stripe
 STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_pFGDr0qx9NJOMp1jhrWueACt")
@@ -40,3 +41,10 @@ def payment_method_createview(request):
             print(new_card_obj) # start saving card
         return  JsonResponse({"message": "Success! Your card was added."})
     return HttpResponse("error", status_code=401)
+
+def upload_payment_proof(request):
+    form = forms.UploadForm(request.POST or None)
+    context = {
+        "form": form
+    }
+    return render(request, "billing/upload-payment-proof.html", context)

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load semanticui %}
 
 
 {% block content %}
@@ -51,72 +52,159 @@
 {#            {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}#}
 {#        </div>#}
     {% else %}
-        {% if not has_card %}
-            <!-- enter creditcard here -->
-                <div class="ui seven wide column">
-                    <br>
-                    <div class="stripe-payment-form" data-token="{{ publish_key }}"
-                         data-next-url="{{ request.build_absolute_uri }}" data-btn-title="Add Payment Method">
+        {% if not object.payment_type %}
+            <form class="ui form" method="POST"> {% csrf_token %}
+                    {#    {{ form }}#}
 
+                    {% render_form payment_type_form %}
+                    {% for error in form.non_field_errors %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ error }}</p>
+                        </div>
+                    {% endfor %}
+                    {% for message in messages %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    <button class="ui teal fluid button" type="submit">Proceed</button>
+                </form>
+
+        {% endif %}
+        {% if object.payment_type == "credit_card" %}
+            {% if not has_card %}
+                <!-- enter creditcard here -->
+                    <div class="ui seven wide column">
+                        <br>
+                        <div class="stripe-payment-form" data-token="{{ publish_key }}"
+                             data-next-url="{{ request.build_absolute_uri }}" data-btn-title="Add Payment Method">
+
+                        </div>
                     </div>
-                </div>
 
-        {% else %}
+            {% else %}
+                <div class="ui five wide column">
+                    <table class="ui celled striped table">
+                        <thead>
+                        <tr>
+                            <th colspan="2">
+                                <h3 class="ui header">
+                                    <i class="cart arrow down icon"></i>
+                                    <div class="content">
+                                        Finalize Checkout - {{ object.order_id|upper }}
+                                    </div>
+                                </h3>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ object.cart.cartitem_set.count }} Item(s): <br/></td>
+                            <td>{% for i in object.cart.cartitem_set.all %}
+                                <b>{{ i.item }} - {{ i.quantity }}pcs</b><br/>
+                            {% endfor %}</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping Address:</td>
+                            <td>{{ object.shipping_address.get_address }}</td>
+                        </tr>
+    {#                    <tr>#}
+    {#                        <td>Billing Address:</td>#}
+    {#                        <td>{{ object.shipping_address.get_address }}</td>#}
+    {#                    </tr>#}
+                        <tr>
+                            <td>Payment Method:</td>
+                            <td>{{ billing_profile.default_card }}(<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Type:</td>
+                            <td>{{ object.payment_type | title }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cart Total:</td>
+                            <td>₱{{ object.cart.total }}</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping Total:</td>
+                            <td>₱{{ object.shipping_total }} ({{ object.shipping_address.state | title }})</td>
+                        </tr>
+                        <tr>
+                            <td>Order Total:</td>
+                            <td>₱{{ object.total }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="right aligned">
+                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                    <button class="ui button" type="submit">Checkout</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% elif object.payment_type == "bank_deposit" %}
             <div class="ui five wide column">
-                <table class="ui celled striped table">
-                    <thead>
-                    <tr>
-                        <th colspan="2">
-                            <h3 class="ui header">
-                                <i class="cart arrow down icon"></i>
-                                <div class="content">
-                                    Finalize Checkout - {{ object.order_id|upper }}
-                                </div>
-                            </h3>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{{ object.cart.cartitem_set.count }} Item(s): <br/></td>
-                        <td>{% for i in object.cart.cartitem_set.all %}
-                            <b>{{ i.item }} - {{ i.quantity }}pcs</b><br/>
-                        {% endfor %}</td>
-                    </tr>
-                    <tr>
-                        <td>Shipping Address:</td>
-                        <td>{{ object.shipping_address.get_address }}</td>
-                    </tr>
-{#                    <tr>#}
-{#                        <td>Billing Address:</td>#}
-{#                        <td>{{ object.shipping_address.get_address }}</td>#}
-{#                    </tr>#}
-                    <tr>
-                        <td>Payment Method:</td>
-                        <td>{{ billing_profile.default_card }}(<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</td>
-                    </tr>
-                    <tr>
-                        <td>Cart Total:</td>
-                        <td>₱{{ object.cart.total }}</td>
-                    </tr>
-                    <tr>
-                        <td>Shipping Total:</td>
-                        <td>₱{{ object.shipping_total }} ({{ object.shipping_address.state | title }})</td>
-                    </tr>
-                    <tr>
-                        <td>Order Total:</td>
-                        <td>₱{{ object.total }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="right aligned">
-                            <form class="form" method="POST" action=""> {% csrf_token %}
-                                <button class="ui button" type="submit">Checkout</button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <table class="ui celled striped table">
+                        <thead>
+                        <tr>
+                            <th colspan="2">
+                                <h3 class="ui header">
+                                    <i class="cart arrow down icon"></i>
+                                    <div class="content">
+                                        Finalize Checkout - {{ object.order_id|upper }}
+                                    </div>
+                                </h3>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ object.cart.cartitem_set.count }} Item(s): <br/></td>
+                            <td>{% for i in object.cart.cartitem_set.all %}
+                                <b>{{ i.item }} - {{ i.quantity }}pcs</b><br/>
+                            {% endfor %}</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping Address:</td>
+                            <td>{{ object.shipping_address.get_address }}</td>
+                        </tr>
+    {#                    <tr>#}
+    {#                        <td>Billing Address:</td>#}
+    {#                        <td>{{ object.shipping_address.get_address }}</td>#}
+    {#                    </tr>#}
+                        <tr>
+                            <td>Payment Type:</td>
+                            <td>{{ object.payment_type | title}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cart Total:</td>
+                            <td>₱{{ object.cart.total }}</td>
+                        </tr>
+                        <tr>
+                            <td>Shipping Total:</td>
+                            <td>₱{{ object.shipping_total }} ({{ object.shipping_address.state | title }})</td>
+                        </tr>
+                        <tr>
+                            <td>Order Total:</td>
+                            <td>₱{{ object.total }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="right aligned">
+                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                    <button class="ui button" type="submit">Checkout</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
         {% endif %}
     {% endif %}
     </div>

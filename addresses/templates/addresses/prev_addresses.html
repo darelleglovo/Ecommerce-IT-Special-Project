@@ -14,7 +14,7 @@
                                 <div class="ui radio checkbox">
                                     <input id='address-{{ address.id }}' type="radio" name="shipping_address" value="{{ address.id }}" tabindex="0"
                                            class="hidden">
-                                    <label>{{ address.address_line_1 }}</label>
+                                    <label>{{ address.get_address }} ({{ address.state |  title}})</label>
                                 </div>
                             </div>
                         {% endfor %}

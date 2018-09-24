@@ -8,6 +8,7 @@ from django.contrib import messages
 # logout = clear cart and update inventory
 from accounts.forms import LoginForm, GuestForm
 from addresses.forms import AddressForm
+from billing.forms import PaymentTypeForm
 
 from billing.models import BillingProfile
 from accounts.models import GuestEmail
@@ -111,6 +112,7 @@ class CartView(SingleObjectMixin, View):
 
 
 def checkout_home(request):
+    payment_type_form = PaymentTypeForm(request.POST or None)
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj = None
     if cart_created or cart_obj.items.count() == 0:
@@ -142,17 +144,34 @@ def checkout_home(request):
 
     if request.method == "POST":
         is_prepared = order_obj.check_done()
-        if is_prepared:
-            did_charge, crg_msg = billing_profile.charge(order_obj)
-            if did_charge:
-                order_obj.mark_paid()
+        if not order_obj.payment_type:
+            if payment_type_form.is_valid():
+                print(payment_type_form.cleaned_data)
+                order_obj.payment_type =  payment_type_form.cleaned_data.get("payment_type")
+                order_obj.save()
+                return redirect("carts:checkout")
+        else:
+            print(order_obj.payment_type)
+            if order_obj.payment_type == "credit_card":
+                print("CC True")
+                if is_prepared:
+                    did_charge, crg_msg = billing_profile.charge(order_obj)
+                    if did_charge:
+                        order_obj.mark_paid()
+                        del request.session['cart_id']
+                        if not billing_profile.user:
+                            billing_profile.set_cards_inactive()
+                        return redirect("carts:success")
+                    else:
+                        print(crg_msg)
+                        return redirect("carts:checkout")
+            elif order_obj.payment_type == "bank_deposit":
+                order_obj.status = 'waiting_for_payment'
+                order_obj.save()
                 del request.session['cart_id']
                 if not billing_profile.user:
                     billing_profile.set_cards_inactive()
                 return redirect("carts:success")
-            else:
-                print(crg_msg)
-                return redirect("carts:checkout")
 
     context = {
         "object": order_obj,
@@ -163,6 +182,8 @@ def checkout_home(request):
         "address_qs": address_qs,
         "has_card": has_card,
         "publish_key": STRIPE_PUB_KEY,
+        "payment_type_form": payment_type_form,
+
     }
     return render(request, "carts/checkout.html", context)
 

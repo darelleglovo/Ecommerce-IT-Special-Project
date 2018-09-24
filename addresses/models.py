@@ -26,11 +26,11 @@ class Address(models.Model):
         return str(self.billing_profile)
 
     def get_address(self):
-        return "{line1}\n{line2}\n{city}\n{state}, {postal}\n{country}".format(
+        return "{line1}\n{line2}\n{city} City\n{state}, {postal}\n{country}".format(
             line1 = self.address_line_1,
             line2 = self.address_line_2 or "", #if none then ""
             city = self.city,
-            state = self.state,
+            state = self.state.capitalize(),
             postal = self.postal_code,
             country = self.country
         )
