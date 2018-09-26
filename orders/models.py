@@ -11,6 +11,7 @@ ORDER_STATUS_CHOICES = {
     ('created', 'Created'),
     ('paid', 'Paid'),
     ('waiting_for_payment', 'Waiting for payment'),
+    ('canceled', 'Canceled'),
 }
 ORDER_SHIPPING_STATUS_CHOICES = {
     ('shipped', 'Shipped'),
@@ -43,6 +44,7 @@ class Order(models.Model):
     shipping_status = models.CharField(max_length=120, default='not_shipped', choices=ORDER_SHIPPING_STATUS_CHOICES)
     shipping_total = models.DecimalField(default=100, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
+    date_added = models.DateTimeField(auto_now_add=True, auto_now=False)
     active = models.BooleanField(default=True)
 
     objects = OrderManager()

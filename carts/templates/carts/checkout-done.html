@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Thank you for your order!!!</h1>
+{#    {{ request.session.is_bank_transfer }}#}
+    {% if request.session.is_bank_transfer %}
+        <p>Your order has been successfully processed!</p>
+        <p>Check your email for your order confirmation and details on how to pay.</p>
+        <p>Thanks for shopping with us online!</p>
+    {% else %}
+        <h1>Thank you for your order!!!</h1>
+    {% endif %}
+
 {% endblock %}

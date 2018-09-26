@@ -90,6 +90,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 
+# SMPT Server Configs (email service)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'einghelscollection@gmail.com'
+EMAIL_HOST_PASSWORD = 'stiits2018'
+
+
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 

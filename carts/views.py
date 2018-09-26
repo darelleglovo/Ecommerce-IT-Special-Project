@@ -3,8 +3,16 @@ from django.views.generic.base import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.template import loader
+
+
 # logout = clear cart and update inventory
 from accounts.forms import LoginForm, GuestForm
 from addresses.forms import AddressForm
@@ -161,6 +169,7 @@ def checkout_home(request):
                         del request.session['cart_id']
                         if not billing_profile.user:
                             billing_profile.set_cards_inactive()
+                        request.session['is_bank_transfer'] = False
                         return redirect("carts:success")
                     else:
                         print(crg_msg)
@@ -171,6 +180,26 @@ def checkout_home(request):
                 del request.session['cart_id']
                 if not billing_profile.user:
                     billing_profile.set_cards_inactive()
+                request.session['is_bank_transfer'] = True
+
+                subject = 'Thank you for shopping with us!'
+                message = ''
+                email_from = 'Einghels Collection'
+                recipient_list = [request.user.email]
+                msg_html = render_to_string('carts/email.html', {'some_params': 'asd'})
+                html_message = loader.render_to_string(
+                    'carts/email.html',
+                    {
+                        'order_id': order_obj.order_id,
+                        'date_added': order_obj.date_added,
+                        'order_status': order_obj.status,
+                        'object': order_obj
+
+
+                    }
+                )
+                send_mail(subject, message, email_from, recipient_list, msg_html, html_message=html_message)
+
                 return redirect("carts:success")
 
     context = {
@@ -183,14 +212,13 @@ def checkout_home(request):
         "has_card": has_card,
         "publish_key": STRIPE_PUB_KEY,
         "payment_type_form": payment_type_form,
-
     }
     return render(request, "carts/checkout.html", context)
 
 
 
 def chechout_done_view(request):
-    return render(request, "carts/checkout-done.html", {})
+    return render(request, "carts/checkout-done.html")
 
 
 
