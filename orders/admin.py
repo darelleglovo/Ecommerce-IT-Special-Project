@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Order
+from .models import Order, PaymentConfirmation
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'status', 'shipping_status', 'payment_type']
@@ -9,3 +9,4 @@ class OrderAdmin(admin.ModelAdmin):
         model = Order
 
 admin.site.register(Order, OrderAdmin)
+admin.site.register(PaymentConfirmation)

@@ -15,10 +15,11 @@
 
                     <p class="ui" style="font-size: 20px;">Payment Confirmation</p>
 
-                <form class="ui form" method="POST"> {% csrf_token %}
+                <form class="ui form" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     {#    {{ form }}#}
 
-                    {% render_form form %}
+{#                    {% render_form form %}#}
+                {{ form }}
                     {% for error in form.non_field_errors %}
                         <div class="ui negative message">
                             <div class="header">

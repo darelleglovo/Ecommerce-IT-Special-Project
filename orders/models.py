@@ -1,3 +1,5 @@
+import random
+import os
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 import math
@@ -21,6 +23,31 @@ PAYMENT_TYPE_CHOICES = {
     ('credit_card', 'Credit Card'),
     ('bank_deposit', 'Bank Deposit'),
 }
+
+def get_filename_ext(filepath):
+    base_name = os.path.basename(filepath)
+    name, ext = os.path.splitext(base_name)
+    return name, ext
+
+def upload_image_path(instance, filename):
+    # print(instance)
+    # print(filename)
+    new_filename = random.randint(1, 33333333)
+    name, ext = get_filename_ext(filename)
+    final_filename = '{new_filename}{ext}'.format(new_filename=new_filename, ext=ext)
+    return "payment-confirmations/{new_filename}/{final_filename}".format(new_filename=new_filename, final_filename=final_filename)
+
+class PaymentConfirmation(models.Model):
+    order_id = models.CharField(max_length=120, blank=True)
+    email = models.EmailField()
+    date_added = models.CharField(max_length=20, blank=True)
+    bdo_branch = models.CharField(max_length=50, blank=True)
+    full_name = models.CharField(max_length=120, blank=True)
+    image = models.ImageField(upload_to=upload_image_path)
+    total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
+
+    def __str__(self):
+        return self.order_id
 
 class OrderManager(models.Manager):
     def new_or_get(self, billing_profile, cart_obj):
