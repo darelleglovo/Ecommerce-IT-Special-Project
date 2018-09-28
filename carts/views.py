@@ -85,12 +85,29 @@ class CartView(SingleObjectMixin, View):
                 if  item_instance.inventory <= 0:
                     qty = 0
                     out_of_stock = True
+
+                    print('out of stock')
+                    if request.is_ajax():
+                        print('out of stock')
+                        return JsonResponse(
+                            {"deleted": delete_item, "item_added": None, "out_of_stock": out_of_stock})
                 else:
                     print("created > ",  item_instance.inventory)
                     item_added = True
-                    item_instance.inventory -= qty
-                    cart_item.quantity = qty
-                    cart_item.save()
+                    if item_instance.inventory >= qty:
+                        item_instance.inventory -= qty
+                        cart_item.quantity = qty
+                        cart_item.save()
+                    else:
+                        qty = 0
+                        out_of_stock = True
+                        print("qty greater than inventory")
+                        cart_item.qty =  0
+                        cart_item.delete()
+                        return JsonResponse(
+                            {"deleted": delete_item, "item_added": None, "out_of_stock": out_of_stock})
+
+                        print("zzzzzzzzzzzzzzzzzzzzzzz")
             elif delete_item:
                 item_instance.inventory += cart_item.quantity
                 cart_item.delete()

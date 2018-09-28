@@ -2,12 +2,15 @@
 
 {% block content %}
 {#    {{ request.session.is_bank_transfer }}#}
-    {% if request.session.is_bank_transfer %}
-        <p>Your order has been successfully processed!</p>
-        <p>Check your email for your order confirmation and details on how to pay.</p>
-        <p>Thanks for shopping with us online!</p>
-    {% else %}
-        <h1>Thank you for your order!!!</h1>
-    {% endif %}
-
+    <div class="ui container">
+    <br>
+        {% if request.session.is_bank_transfer %}
+            <p>Your order has been successfully processed!</p>
+            <p>Check your email for your order confirmation and details on how to pay.</p>
+            <p>Thanks for shopping with us online!</p>
+        {% else %}
+            <h1>Thank you for your order!!!</h1>
+            <p>Your item will be processed for shipping within 1-2 days.</p>
+        {% endif %}
+    </div>
 {% endblock %}

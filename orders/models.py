@@ -3,6 +3,12 @@ import os
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 import math
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.template import loader
+
 from ecommerce.utils import unique_order_id_generator
 from carts.models import Cart
 
@@ -69,6 +75,7 @@ class Order(models.Model):
     payment_type =  models.CharField(max_length=120, null=True, blank=True, choices=PAYMENT_TYPE_CHOICES)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     shipping_status = models.CharField(max_length=120, default='not_shipped', choices=ORDER_SHIPPING_STATUS_CHOICES)
+    email_shipping_sent =  models.BooleanField(default=False)
     shipping_total = models.DecimalField(default=100, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
     date_added = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -140,6 +147,30 @@ def post_save_order(sender, instance, created, *args, **kwargs):
     if created:
         print("updating")
         instance.update_total()
+
+    if instance.shipping_status == 'shipped':
+        if not instance.email_shipping_sent:
+            print('sending email to', instance.billing_profile.email)
+
+            subject = 'Your item is shipping!'
+            message = ''
+            email_from = 'Einghels Collection'
+            recipient_list = [instance.billing_profile.email]
+            msg_html = render_to_string('carts/email_shipping.html', {'some_params': 'asd'})
+            html_message = loader.render_to_string(
+                'carts/email_shipping.html',
+                {
+                    'order_id': instance.order_id,
+                    'date_added': instance.date_added,
+                    'order_status': instance.status,
+                    'object': instance
+
+                }
+            )
+            send_mail(subject, message, email_from, recipient_list, msg_html, html_message=html_message)
+
+            instance.email_shipping_sent = True
+            instance.save()
     # print("updating")
     # instance.update_total()
 post_save.connect(post_save_order, sender=Order)

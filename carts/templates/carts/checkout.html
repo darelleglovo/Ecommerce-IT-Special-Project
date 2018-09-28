@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    {{ object.order_id }} -- {{ object.cart }}
+{#    {{ object.order_id }} -- {{ object.cart }}#}
 <br>
 {% if not billing_profile %}
     <div class="ui centered grid">
@@ -18,45 +18,68 @@
 {#        </div>#}
     </div>
 {% else %}
-    <div class="ui centered grid">
+    <div class="ui container">
     {% if not object.shipping_address %}
-        <div class="ui six wide column">
+        <div class="ui centered grid">
+
+            <div class="ui six wide column">
+                <h2 class="ui  header">
+                    <i class="shipping fast icon"></i>
+                    <div class="content">
+                        Add New Shipping Address
+                    </div>
+                </h2>
+                {% url 'addresses:checkout_address_create' as checkout_address_create %}
+                {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
+            </div>
+            <!-- INCLUDE -->
+            <div class="ui six wide column">
             <h2 class="ui  header">
-                <i class="shipping fast icon"></i>
-                <div class="content">
-                    Shipping Address
-                </div>
-            </h2>
-            {% url 'addresses:checkout_address_create' as checkout_address_create %}
-            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
+    {#                <i class="shipping fast icon"></i>#}
+                    <div class="content">
+                         - or select from your addresses
+                    </div>
+                </h2>
+                {% url 'addresses:checkout_address_reuse' as checkout_address_reuse %}
+                {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
+            </div>
+    {#    {% elif not object.billing_address %}#}
+    {#        <div class="ui six wide column">#}
+    {#            <h2 class="ui  header">#}
+    {#                <i class="shipping fast icon"></i>#}
+    {#                <div class="content">#}
+    {#                    Billing Address#}
+    {#                </div>#}
+    {#            </h2>#}
+    {#            {% url 'addresses:checkout_address_create' as checkout_address_create %}#}
+    {#            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}#}
+    {#        </div>#}
+    {#        <!-- INCLUDE -->#}
+    {#        <div class="ui six wide column">#}
+    {#            {% url 'addresses:checkout_address_reuse' as checkout_address_reuse %}#}
+    {#            {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}#}
+    {#        </div>#}
         </div>
-        <!-- INCLUDE -->
-        <div class="ui six wide column">
-            {% url 'addresses:checkout_address_reuse' as checkout_address_reuse %}
-            {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
-        </div>
-{#    {% elif not object.billing_address %}#}
-{#        <div class="ui six wide column">#}
-{#            <h2 class="ui  header">#}
-{#                <i class="shipping fast icon"></i>#}
-{#                <div class="content">#}
-{#                    Billing Address#}
-{#                </div>#}
-{#            </h2>#}
-{#            {% url 'addresses:checkout_address_create' as checkout_address_create %}#}
-{#            {% include 'addresses/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}#}
-{#        </div>#}
-{#        <!-- INCLUDE -->#}
-{#        <div class="ui six wide column">#}
-{#            {% url 'addresses:checkout_address_reuse' as checkout_address_reuse %}#}
-{#            {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}#}
-{#        </div>#}
     {% else %}
         {% if not object.payment_type %}
-            <form class="ui form" method="POST"> {% csrf_token %}
-                    {#    {{ form }}#}
 
-                    {% render_form payment_type_form %}
+            <div class="ui raised segment">
+                <form class="ui form" method="POST"> {% csrf_token %}
+                    {#    {{ form }}#}
+{#                    {% render_form payment_type_form %}#}
+            <table>
+
+                {% for radio in payment_type_form.payment_type %}
+                <tr>
+                    <td>
+                        {{ radio }}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+
                     {% for error in form.non_field_errors %}
                         <div class="ui negative message">
                             <div class="header">
@@ -73,8 +96,18 @@
                             <p>{{ message }}</p>
                         </div>
                     {% endfor %}
-                    <button class="ui teal fluid button" type="submit">Proceed</button>
+                    <button class="ui teal  button" type="submit" style="margin-top: 10px">Proceed</button>
                 </form>
+            </div>
+            <div class="ui raised segment">
+                <p>BDO Bank Transfer Instructions</p>
+                <p>BDO Account Name: Danica Ann  Villoria</p>
+                <p>BDO Account Number: 006551213255</p>
+                <p>Please pay your total amount and confirm your payment within 3 days after placing your order.</p>
+                <p>Unpaid orders will not be processed.</p>
+                <p>After making your payment, you would need to confirm your payment through <a href="http://127.0.0.1:8000/payment-confirmation/">payment confirmation</a> page. We will recieve the payment information and confirm payment within 1-2 days.</p>
+                <p>Your order will not ship until we receive payment.</p>
+            </div>
 
         {% endif %}
         {% if object.payment_type == "credit_card" %}
@@ -210,7 +243,6 @@
     </div>
 
 {% endif %}
-
 
 
 

@@ -101,8 +101,14 @@
                 url: "{% url 'carts:cart' %}",
                 data: formData,
                 success: function(data) {
-                    $("#jquery-message").text("Added to cart");
-                    $("#jquery-message").show();
+                    if(data.out_of_stock){
+                        $("#jquery-message").text("Out of stock");
+                        $("#jquery-message").show();
+                    }else{
+                        $("#jquery-message").text("Added to cart");
+                        $("#jquery-message").show();
+
+                    }
                     updateCartItemCount()
                 },
                 error: function (response, error) {
