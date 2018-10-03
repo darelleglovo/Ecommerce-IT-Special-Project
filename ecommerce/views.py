@@ -10,7 +10,8 @@ def home_page(request):
     context = {
         "title": "hello World!"
     }
-    return render(request, "home_page.html", context)
+    # return render(request, "home_page.html", context)
+    return redirect('products:home')
 
 def about_page(request):
     return render(request, "home_page.html", {})

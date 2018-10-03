@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
-from .models import PaymentConfirmation
+from .models import PaymentConfirmation, Order
 
 # Create your views here.
 def upload_payment_proof(request):
@@ -24,6 +24,13 @@ def upload_payment_proof(request):
 
 def upload_done(request):
     return render(request, "orders/success.html")
+
+def past_orders(request):
+    orders = Order.objects.filter(billing_profile__email=request.user.email)
+    context = {
+        "orders": orders
+    }
+    return render(request, "orders/past-orders.html", context)
 
 
     # order_id = models.CharField(max_length=120, blank=True)

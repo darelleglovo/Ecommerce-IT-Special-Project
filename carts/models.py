@@ -6,7 +6,7 @@ from decimal import Decimal
 # Create your models here.
 
 class CartItem(models.Model):
-    cart = models.ForeignKey('Cart', on_delete=models.DO_NOTHING)
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     item = models.ForeignKey('products.Product', on_delete=models.DO_NOTHING)
     quantity = models.PositiveIntegerField(default=1)
     line_item_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True)

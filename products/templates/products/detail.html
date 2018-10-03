@@ -103,9 +103,11 @@
                 success: function(data) {
                     if(data.out_of_stock){
                         $("#jquery-message").text("Out of stock");
+                        $( "#jquery-message" ).removeClass( "green" ).addClass( "red" );
                         $("#jquery-message").show();
                     }else{
                         $("#jquery-message").text("Added to cart");
+                        $( "#jquery-message" ).removeClass( "red" ).addClass( "green" );
                         $("#jquery-message").show();
 
                     }

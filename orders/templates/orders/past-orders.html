@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="ui container">
+        <br>
+        <h1>My Past Orders</h1>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Payment Status</th>
+                <th>Shipping Status</th>
+                <th>Payment Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders reversed %}
+                {% if order.status != "created" %}
+                    <tr>
+                        <td>{{ order.order_id | upper }}</td>
+                        <!-- td -->
+                        {% if order.status == "paid" %}
+                            <td class="positive">Paid</td>
+                        {% elif order.status == "created" %}
+                            <td>Created</td>
+                        {% elif order.status == "canceled" %}
+                            <td class="negative">Canceled</td>
+                        {% elif order.status == "waiting_for_payment" %}
+                            <td>Waiting for payment</td>
+                        {% endif %}
+                        <!-- /td -->
+
+                        <!-- td -->
+                        {% if order.shipping_status == "shipped" %}
+                            <td class="positive">Shipped</td>
+                        {% elif order.shipping_status == "not_shipped" %}
+                            <td>Not yet shipped</td>
+                        {% endif %}
+                        <!-- /td -->
+
+                        <!-- td -->
+                        {% if order.payment_type == "bank_deposit" %}
+                            <td>Bank deposit</td>
+                        {% elif order.payment_type == "credit_card" %}
+                            <td>Credit card</td>
+                        {% endif %}
+                        <!-- /td -->
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
