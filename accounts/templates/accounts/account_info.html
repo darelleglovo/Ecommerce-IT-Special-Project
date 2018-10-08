@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="ui container">
+        <div class="ui centered grid">
+            <div class="seven wide computer ten wide tablet thirteen wide mobile column">
+                <br>
+                <h2><i class="user icon"></i> My Account</h2>
+                <table class="ui definition unstackable table">
+
+                    <tbody>
+                    <tr>
+                        <td class="collapsing">Username</td>
+                        <td class="">{{ request.user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td class="collapsing">First Name</td>
+                        <td class="">{{ request.user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>{{ request.user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>{{ request.user.email }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="ui teal button" onclick="location.href='{% url 'accounts:change_email' %}';"><i class="at icon"></i>Change email</button>
+                <button class="ui teal button" onclick="location.href='{% url 'accounts:change_password' %}';"><i class="lock icon"></i>Change password</button>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

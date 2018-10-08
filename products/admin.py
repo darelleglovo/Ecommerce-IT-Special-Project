@@ -27,10 +27,18 @@ class ProductAdmin(ImageCroppingMixin, admin.ModelAdmin):
         verbose_name = 'asd'
         verbose_name_plural = 'asdasdasd'
 
+class SubcategoryInline(admin.TabularInline):
+    model = Subcategory
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'slug']
+    inlines = [
+        SubcategoryInline
+    ]
     class Meta:
         model = Category
+
+
 
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'category', 'slug']
@@ -40,7 +48,7 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Subcategory, SubcategoryAdmin)
+# admin.site.register(Subcategory, SubcategoryAdmin)
 
 admin.site.unregister(Group)
 admin.site.unregister(Association)

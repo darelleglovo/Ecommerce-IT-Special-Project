@@ -23,7 +23,7 @@
 
 <script>
     function updateCartItemCount(){
-        var badge = $("#cart-count-badge");
+        var badge = $(".cart-count-badge");
         var btn = $("#submit-btn");
         btn.addClass('loading')
         $.ajax({
@@ -47,15 +47,36 @@
 </script>
 
 <script>
+    $('.ui.left.sidebar').sidebar({
+    transition: 'overlay'
+});
+// left is opened by button
+$('.ui.left.sidebar')
+    .sidebar('attach events', '.open.button');
     $('.ui.dropdown')
         .dropdown();
     $('.ui.sticky')
         .sticky({
         })
     ;
+    $('a.browse.item')
+  .popup({
+      inline     : true,
+  popup : $('.ui.flowing.basic.admission.popup'),//Popup Content selector
+  on    : 'click',//event trigger
+  position   : 'right center',
+  lastResort:true,
+  })
+;
+    $('.ui.popup')
+        .popup();
     $('.ui.radio.checkbox')
       .checkbox()
     ;
+    $('.ui.sidebar').sidebar({
+    context: $('.ui.pushable.segment'),
+    transition: 'overlay'
+    }).sidebar('attach events', '#mobile_item');
 </script>
 <script>
     $('.special.cards .image').dimmer({

@@ -144,7 +144,7 @@ AUTHENTICATION_BACKENDS = (
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Singapore'
 
 USE_I18N = True
 
@@ -188,3 +188,8 @@ CSRF_COOKIE_SECURE              = False
 SECURE_HSTS_SECONDS             = None
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
+
+AWS_GROUP_NAME = "einghelscollection_group"
+AWS_USERNAME = "darelleglovo-user"
+AWS_ACCESS_KEY_ID = "AKIAJIHRZBHB3RFVME2Q"
+AWS_SECRET_KEY = "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"

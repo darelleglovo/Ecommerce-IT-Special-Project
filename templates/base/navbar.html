@@ -7,7 +7,8 @@
 {#  </div>#}
 {#</div>#}
 {% load static %}
-<div class="ui container" style="background-color: black;">
+<div class="computer only row">
+    <div class="ui container" style="background-color: black;">
     <div class="ui large secondary menu" style="background-color: white;">
 {#        <a class="item"><p class="mainlogo"><span style="color: #11D7D8;">Einghel's </span> <span style="color: #FD9AB6;">Collection</span></p></a>#}
         <a class="item"style="padding: 0px;"><img src="{% static 'img/bruh.png' %}" style="width: 165px; height: 100px;"></a>
@@ -16,6 +17,7 @@
         <a class="item">Contact us</a>
         {% if user.is_authenticated %}
             <a class="item" href="{% url 'orders:past-orders' %}">My Orders</a>
+            <a class="item" href="{% url 'accounts:account_info' %}">Account</a>
         {% endif %}
         <div class="right menu">
             {% if user.is_authenticated %}
@@ -30,14 +32,17 @@
             {% endif %}
             <a class="item" href="{% url 'carts:cart' %}">
                 <i class="shopping cart icon"></i>
-                <div id="cart-count-badge" class="floating ui teal label"></div>
+                <div class="floating ui teal label cart-count-badge"></div>
 
             </a>
 
         </div>
+
     </div>
 </div>
-<hr style="margin-bottom: 0px;">
+</div>
+
+
 
 
 

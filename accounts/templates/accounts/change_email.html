@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load semanticui %}
+{% block content %}
+<div class="ui container">
+<br>
+    <h2>Change email</h2>
+    <form method="POST" action="{% url 'accounts:change_email' %}" class="" />
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="ui teal button" type="submit">Save</button>
+</form>
+</div>
+
+{% endblock %}

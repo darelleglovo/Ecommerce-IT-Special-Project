@@ -20,7 +20,7 @@
 {% else %}
     <div class="ui container">
     {% if not object.shipping_address %}
-        <div class="ui centered grid">
+        <div class="ui centered stackable grid" style="padding-left: 25px; padding-right: 25px">
 
             <div class="ui six wide column">
                 <h2 class="ui  header">
@@ -62,7 +62,12 @@
         </div>
     {% else %}
         {% if not object.payment_type %}
-
+            <h2 class="ui  header">
+                    <i class="credit card outline icon"></i>
+                    <div class="content">
+                        Select Payment Method
+                    </div>
+                </h2>
             <div class="ui raised segment">
                 <form class="ui form" method="POST"> {% csrf_token %}
                     {#    {{ form }}#}
@@ -113,7 +118,7 @@
         {% if object.payment_type == "credit_card" %}
             {% if not has_card %}
                 <!-- enter creditcard here -->
-                    <div class="ui seven wide column">
+                    <div class="ui seven wide computer tablet eleven wide mobile column">
                         <br>
                         <div class="stripe-payment-form" data-token="{{ publish_key }}"
                              data-next-url="{{ request.build_absolute_uri }}" data-btn-title="Add Payment Method">
@@ -123,7 +128,7 @@
 
             {% else %}
                 <div class="ui five wide column">
-                    <table class="ui celled striped table">
+                    <table class="ui celled striped unstackable table">
                         <thead>
                         <tr>
                             <th colspan="2">

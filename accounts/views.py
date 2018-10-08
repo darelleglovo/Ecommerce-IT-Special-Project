@@ -1,4 +1,5 @@
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
@@ -89,3 +90,45 @@ def register_page(request):
             new_user = User.objects.create_user(username, email, password, first_name=first_name, last_name=last_name)
             return redirect('accounts:login')
         return render(request, "accounts/register.html", context)
+
+def change_password(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)  # Important!
+                #messages.success(request, 'Your password was successfully updated!')
+                return render(request, 'accounts/change_password_done.html')
+            else:
+                #messages.error(request, 'Please correct the error below.')
+                pass
+        else:
+            form = PasswordChangeForm(request.user)
+        return render(request, 'accounts/change_password.html', {
+            'form': form
+        })
+    else:
+        return redirect('accounts:login')
+
+def account_info(request):
+    return render(request, 'accounts/account_info.html')
+
+def change_email(request):
+
+    user = request.user
+    form = forms.EditProfileForm(request.POST or None, initial={'email':user.email})
+    if request.method == 'POST':
+        if form.is_valid():
+
+
+            user.email = request.POST['email']
+
+            user.save()
+            return redirect('accounts:account_info')
+
+    context = {
+        "form": form
+    }
+
+    return render(request, "accounts/change_email.html", context)

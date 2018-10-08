@@ -1,0 +1,11 @@
+server_addr: SERVER_IP:5223
+    tunnels:
+      webui:
+        proto: http
+        addr: localhost:8080
+        auth: user:password
+        host: webui.my-tunnel-host.com
+      ssh:
+        proto: tcp
+        addr: 192.168.0.5:22
+        remote_addr: 0.0.0.0:22

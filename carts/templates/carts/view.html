@@ -11,8 +11,8 @@
     <br>
     {% if object.cartitem_set.exists %}
         <div class="ui centered grid">
-        <div class="ui nine wide column">
-            <table class="ui celled striped table">
+        <div class="ui nine wide computer twelve wide tablet fourteen wide mobile column">
+            <table class="ui celled striped unstackable table">
                 <thead>
                 <tr>
                     <th colspan="6">
@@ -61,6 +61,8 @@
         </div>
 
         </div>
+
+
 
     {% else %}
     <p class="lead">Cart is empty</p>

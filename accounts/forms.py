@@ -1,7 +1,23 @@
 from django import forms
 from django.contrib.auth import get_user_model
+import re
 
 User = get_user_model()
+
+class EditProfileForm(forms.ModelForm):
+
+    email = forms.CharField()
+
+    class Meta:
+        model = User
+        fields = ['email']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        qs = User.objects.filter(email=email)
+        if qs.exists():
+            raise forms.ValidationError("Email is taken")
+        return email
 
 class GuestForm(forms.Form):
     email = forms.EmailField()
@@ -66,10 +82,14 @@ class RegisterForm(forms.Form):
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name')
-        if first_name.isalpha():
-            return first_name
-        else:
-            raise forms.ValidationError("Letters only.")
+        for x in first_name:
+            if x.isalpha() or x == ' ':
+                continue
+            else:
+                raise forms.ValidationError("Letters only.")
+                break
+        first_name = re.sub(' +', ' ', first_name)
+        return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')

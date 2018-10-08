@@ -10,6 +10,7 @@ class CartAdmin(admin.ModelAdmin):
     inlines = [
         CartItemInline
     ]
+    readonly_fields = ('timestamp',)
     class Meta:
         model = Cart
 
