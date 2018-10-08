@@ -1,27 +1,32 @@
 <div class="ui vertical menu">
-                    <div class="item">
-                        <div class="ui icon input">
-                            <input type="text" placeholder="Search...">
-                            <i class="search link icon"></i>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="header"><a class="header" href="{% url 'products:home' %}">All products ({{ prod_count }})</a></div>
+    <form id="frmSubmit" method="GET" action="{% url 'search:query' %}">
+        <div class="item">
 
-                    </div>
-                    {% for obj in categories %}
-                    <div class="item">
-                        <div class="header"><a class="header" href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></div>
-                        <div class="menu">
-                            {% for sub in subcategories %}
-                                {% if sub.category|slugify == obj.title|slugify %}
-                                    <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>
-                                {% endif %}
+            <div class="ui icon input">
+                <input type="text" placeholder="Search..." name="q">
+                <i class="search link icon" onclick="document.getElementById('frmSubmit').submit();"></i>
+            </div>
 
 
-                            {% endfor %}
+        </div>
+    </form>
+    <div class="item">
+        <div class="header"><a class="header" href="{% url 'products:home' %}">All products ({{ prod_count }})</a></div>
 
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+    </div>
+    {% for obj in categories %}
+    <div class="item">
+        <div class="header"><a class="header" href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></div>
+        <div class="menu">
+            {% for sub in subcategories %}
+                {% if sub.category|slugify == obj.title|slugify %}
+                    <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>
+                {% endif %}
+
+
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endfor %}
+</div>

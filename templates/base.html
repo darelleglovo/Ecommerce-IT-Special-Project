@@ -28,6 +28,17 @@
         <main class="Site-content">
             <div class="ui pushable segment">
                 <div class="ui sidebar vertical menu">
+                    <a class="item">
+                        <form id="frmSubmit" method="GET" action="{% url 'search:query' %}">
+                            <div class="item">
+                                <div class="ui icon input">
+                                    <input type="text" placeholder="Search..." name="q">
+                                    <i class="search link icon" onclick="document.getElementById('frmSubmit').submit();"></i>
+                                </div>
+                            </div>
+                        </form>
+                    </a>
+                    <a class="header item">Einghel's Collection</a>
                     <a class="item" href="{% url 'products:home' %}">Products</a>
                     <a class="item">Abput us</a>
                     <a class="item">Contact us</a>

@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('addresses.urls')),
     path('', include('billing.urls')),
     path('', include('orders.urls')),
+    path('', include('search.urls')),
     path('redirect/', views.registered, name='registered'),
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
