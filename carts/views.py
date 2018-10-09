@@ -63,6 +63,8 @@ class CartView(SingleObjectMixin, View):
         if self.request.user.is_authenticated:
             cart.user = self.request.user  # user sending request
             cart.save()
+
+        print(cart.user)
         return cart
 
     def get(self, request, *args, **kwargs):
@@ -187,6 +189,24 @@ def checkout_home(request):
                         if not billing_profile.user:
                             billing_profile.set_cards_inactive()
                         request.session['is_bank_transfer'] = False
+
+                        subject = 'Thank you for shopping with us!'
+                        message = ''
+                        email_from = 'Einghels Collection'
+                        recipient_list = [request.user.email]
+                        msg_html = render_to_string('carts/email_card.html', {'some_params': 'asd'})
+                        html_message = loader.render_to_string(
+                            'carts/email_card.html',
+                            {
+                                'order_id': order_obj.order_id,
+                                'date_added': order_obj.date_added,
+                                'order_status': order_obj.status,
+                                'object': order_obj
+
+                            }
+                        )
+                        send_mail(subject, message, email_from, recipient_list, msg_html, html_message=html_message)
+
                         return redirect("carts:success")
                     else:
                         print(crg_msg)

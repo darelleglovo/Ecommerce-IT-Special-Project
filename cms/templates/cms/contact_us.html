@@ -1,0 +1,53 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<br>
+    <div class="ui container">
+        <div class="row">
+                <h1>Contact us</h1>
+        </div>
+        <br>
+        <div class="ui two column stackable centered grid">
+
+            <div class="column">
+
+                <div id="map"></div>
+            </div>
+            <div class="column">
+                <h4>Visit us at our physical store:</h4>
+                <p>{{ contact_us.address }}&nbsp;-&nbsp;<a href="https://www.waze.com/ul?ll=14.562473%2C121.060577&navigate=yes&zoom=17">Navigate</a></p>
+                <p><b>Facebook:&nbsp;</b><a href="{{ contact_us.fb_link }}">{{ contact_us.fb_link }}</a></p>
+                <p><b>FB Messenger:&nbsp;</b><a href="{{ contact_us.fb_messenger_link }}">{{ contact_us.fb_messenger_link }}</a></p>
+                <p><b>Email us at:&nbsp;</b>{{ contact_us.email }}</p>
+                <p><b>Call us at:&nbsp;</b>{{ contact_us.phone_number }}</p>
+            </div>
+            <br/>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+      var map;
+      var myLatLng = {lat: 14.562473, lng: 121.060577};
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: myLatLng,
+          zoom: 15
+        });
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: "Einghel's Collection"
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD78ZpyJQgSwfWLW3NN81NhIra3qm-HFPs&callback=initMap"
+    async defer></script>
+
+{% endblock %}

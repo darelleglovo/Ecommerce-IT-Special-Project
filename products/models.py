@@ -97,6 +97,10 @@ class Product(models.Model):
     cropping = ImageRatioField('image', '640x640')
     active =  models.BooleanField(default=True)
     inventory = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    size = models.CharField(max_length=30)
+    weight = models.CharField(max_length=30)
+    color = models.CharField(max_length=30)
+    odor = models.CharField(max_length=50)
 
     def clean_inventory(self):
         if self.inventory < 0:

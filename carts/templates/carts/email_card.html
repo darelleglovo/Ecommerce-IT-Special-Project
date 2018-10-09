@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+        th {
+            background-color: #d6d6d6;
+        }
+
+        td, th {
+            border: 1px solid #c4c4c4;
+            text-align: left;
+            padding: 8px;
+        }
+        {##}
+        {#tr:nth-child(even) {#}
+        {#    background-color: #dddddd;#}
+        {#}#}
+    </style>
+</head>
+<body>
+    <h1>Order ID - {{ order_id | upper }}</h1>
+    <p>Thank you for your order! Your order has been recieved.</p>
+    <table>
+        <tr>
+            <th colspan="2">Order Details</th>
+        </tr>
+        <tr>
+            <td>Order ID:</td>
+            <td>{{ order_id | upper }}</td>
+        </tr>
+        <tr>
+            <td>Date Added:</td>
+            <td>{{ date_added }}</td>
+        </tr>
+        <tr>
+            <td>Payment Method:</td>
+            <td>{{ object.billing_profile.default_card }}</td>
+        </tr>
+        <tr>
+            <td>Order Status:</td>
+            <td>Paid</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        {% for i in object.cart.cartitem_set.all %}
+            <tr>
+                <td>
+                   {{ i.item }}
+                </td>
+                <td>
+                    {{ i.quantity }}
+                </td>
+                <td>
+                    ₱{{ i.item.price }}
+                </td>
+                <td>
+                    ₱{{ i.line_item_total }}
+                </td>
+
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" align="right" style="text-align:right">
+                <b>Sub-total:</b>
+            </td>
+                ₱{{ object.cart.total }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" align="right" style="text-align:right">
+                <b>Shipping Fee ({{ object.shipping_address.state | title }} area):</b>
+            </td>
+            <td>
+               ₱{{ object.shipping_total }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" align="right" style="text-align:right">
+                <b>Total:</b>
+            </td>
+            <td>
+                ₱{{ object.total }}
+            </td>
+        </tr>
+    </table>
+    <p>Please wait for follow up email about item shipment.</p>
+
+
+
+
+
+</body>
+</html>
+

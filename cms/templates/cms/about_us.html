@@ -1,0 +1,13 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="ui container">
+    <br/>
+    <h1>About us</h1>
+        <img class="ui centered medium image" src="{% static 'img/bruh.png' %}" style="width: 50%; height: 50%;">
+    <p>{{ about_us.about_us }}</p>
+    </div>
+
+{% endblock %}

@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'accounts',
     'billing',
     'addresses',
-    'search'
+    'search',
+    'cms'
 ]
 
 STRIPE_SECRET_KEY = "sk_test_pFGDr0qx9NJOMp1jhrWueACt"

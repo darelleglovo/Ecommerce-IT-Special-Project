@@ -10,7 +10,7 @@ from accounts.views import login_page
 urlpatterns = [
     path('', views.home_page),
     path('login/', login_page, name='login'),
-    path('about/', views.about_page),
+    #path('about/', views.about_page),
     path('contact/', views.contact_page),
     path('', include('accounts.urls')),
     path('', include('carts.urls')),
@@ -18,6 +18,7 @@ urlpatterns = [
     path('', include('billing.urls')),
     path('', include('orders.urls')),
     path('', include('search.urls')),
+    path('', include('cms.urls')),
     path('redirect/', views.registered, name='registered'),
     path('', include('products.urls')), # Django 2.0
     path('admin/', admin.site.urls),
