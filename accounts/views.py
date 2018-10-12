@@ -6,6 +6,7 @@ from django.utils.http import is_safe_url
 
 from . import forms
 from .models import GuestEmail
+from billing.models import BillingProfile
 
 def logout_page(request):
     if request.user.is_authenticated:
@@ -115,7 +116,7 @@ def account_info(request):
     return render(request, 'accounts/account_info.html')
 
 def change_email(request):
-
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     user = request.user
     form = forms.EditProfileForm(request.POST or None, initial={'email':user.email})
     if request.method == 'POST':
@@ -123,8 +124,9 @@ def change_email(request):
 
 
             user.email = request.POST['email']
-
+            billing_profile.email = request.POST['email']
             user.save()
+            billing_profile.save()
             return redirect('accounts:account_info')
 
     context = {

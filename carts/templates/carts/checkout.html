@@ -34,12 +34,7 @@
             </div>
             <!-- INCLUDE -->
             <div class="ui six wide column">
-            <h2 class="ui  header">
-    {#                <i class="shipping fast icon"></i>#}
-                    <div class="content">
-                         - or select from your addresses
-                    </div>
-                </h2>
+
                 {% url 'addresses:checkout_address_reuse' as checkout_address_reuse %}
                 {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
             </div>
@@ -105,7 +100,7 @@
                 </form>
             </div>
             <div class="ui raised segment">
-                <p>BDO Bank Transfer Instructions</p>
+                <p>BDO Bank Deposit Instructions</p>
                 <p>BDO Account Name: Danica Ann  Villoria</p>
                 <p>BDO Account Number: 006551213255</p>
                 <p>Please pay your total amount and confirm your payment within 3 days after placing your order.</p>
@@ -113,6 +108,10 @@
                 <p>After making your payment, you would need to confirm your payment through <a href="http://127.0.0.1:8000/payment-confirmation/">payment confirmation</a> page. We will recieve the payment information and confirm payment within 1-2 days.</p>
                 <p>Your order will not ship until we receive payment.</p>
             </div>
+
+            <form class="form" method="POST" action="{% url 'carts:cancel_address' %}"> {% csrf_token %}
+                <button class="ui button" type="submit">Back</button>
+            </form>
 
         {% endif %}
         {% if object.payment_type == "credit_card" %}
@@ -179,7 +178,13 @@
                         <tr>
                             <td colspan="2" class="right aligned">
                                 <form class="form" method="POST" action=""> {% csrf_token %}
-                                    <button class="ui button" type="submit">Checkout</button>
+                                    <button class="ui button" type="submit">Finalize checkout</button>
+                                </form>
+                                <form class="form" method="POST" action="{% url 'carts:cancel' %}"> {% csrf_token %}
+                                    <button class="ui button" type="submit">Cancel</button>
+                                </form>
+                                <form class="form" method="POST" action="{% url 'carts:cancel_mop' %}"> {% csrf_token %}
+                                    <button class="ui button" type="submit">Back</button>
                                 </form>
                             </td>
                         </tr>
@@ -236,7 +241,13 @@
                         <tr>
                             <td colspan="2" class="right aligned">
                                 <form class="form" method="POST" action=""> {% csrf_token %}
-                                    <button class="ui button" type="submit">Checkout</button>
+                                    <button class="ui button" type="submit">Finalize checkout</button>
+                                </form>
+                                <form class="form" method="POST" action="{% url 'carts:cancel' %}"> {% csrf_token %}
+                                    <button class="ui button" type="submit">Cancel</button>
+                                </form>
+                                <form class="form" method="POST" action="{% url 'carts:cancel_mop' %}"> {% csrf_token %}
+                                    <button class="ui button" type="submit">Back</button>
                                 </form>
                             </td>
                         </tr>

@@ -58,6 +58,7 @@
                 </tr>
                 </tbody>
             </table>
+            <p><i style="color: red;">Shipping charges not yet included in subtotal amount.**</i></p>
         </div>
 
         </div>
@@ -65,8 +66,9 @@
 
 
     {% else %}
-        <div class="ui container">
-            <p class="lead">Cart is empty</p>
+        <div class="ui container" style="padding-left: 15px;">
+            <h2>Your cart is empty</h2>
+            <a href="{% url 'products:home' %}">Shop now</a>
         </div>
 
     {% endif %}

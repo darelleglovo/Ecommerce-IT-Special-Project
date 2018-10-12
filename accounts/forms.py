@@ -36,6 +36,11 @@ class LoginForm(forms.Form):
         }
     ))
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username').lower()
+
+        return username
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -99,7 +104,7 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Letters only.")
 
     def clean_username(self):
-        username = self.cleaned_data.get('username')
+        username = self.cleaned_data.get('username').lower()
         if len(username) < 5:
             raise forms.ValidationError("Username should have 5 characters or more.")
 
@@ -110,7 +115,7 @@ class RegisterForm(forms.Form):
         return username
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower()
         qs = User.objects.filter(email=email)
         if qs.exists():
             raise forms.ValidationError("Email is taken")

@@ -4,7 +4,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0", shrink-to-fit=no">
     <title>Welcome to Einghel's Collection</title>
     {% include 'base/css.html' %}
     {% block base_head %}{% endblock %}<!-- custom css block for home_page.html -->
@@ -17,7 +17,7 @@
 
     </div>
     <div class="tablet mobile only row">
-        <div class="column">
+        <div class="column" style="padding-right: 0px;">
             <div class="ui menu">
                 <a id="mobile_item" class="item"><i class="bars icon"></i></a>
             </div>
@@ -28,6 +28,7 @@
         <main class="Site-content">
             <div class="ui pushable segment">
                 <div class="ui sidebar vertical menu">
+                    <a class="header item" href="{% url 'products:home' %}"><img src="{% static 'img/bruh.png' %}"></img></a>
                     <a class="item">
                         <form id="frmSubmit" method="GET" action="{% url 'search:query' %}">
                             <div class="item">
@@ -40,8 +41,8 @@
                     </a>
                     <a class="header item">Einghel's Collection</a>
                     <a class="item" href="{% url 'products:home' %}">Products</a>
-                    <a class="item">Abput us</a>
-                    <a class="item">Contact us</a>
+                    <a class="item" href="{% url 'cms:about' %}">About us</a>
+                    <a class="item" href="{% url 'cms:contact' %}">Contact us</a>
                     {% if user.is_authenticated %}
                         <a class="item" href="{% url 'orders:past-orders' %}">My Orders</a>
                         <a class="item" href="{% url 'accounts:account_info' %}">Account</a>
@@ -71,6 +72,16 @@
                             {% endfor %}
                         </div>
                     </div>
+                    {% if user.is_authenticated %}
+                        <a class="ui item" href="/logout">
+                            Welcome, {{ user.first_name }} |
+                            Logout
+                        </a>
+                    {% else %}
+                        <a class="ui item" href="{% url 'accounts:login' %}">
+                            Login
+                        </a>
+                    {% endif %}
                     <!--   Your menu button  -->
 {#                    <a class="browse item">#}
 {#                        Browse Courses#}

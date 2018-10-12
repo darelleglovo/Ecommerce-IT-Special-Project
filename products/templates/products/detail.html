@@ -106,7 +106,7 @@
                 data: formData,
                 success: function(data) {
                     if(data.out_of_stock){
-                        $("#jquery-message").text("Out of stock");
+                        $("#jquery-message").text("Insufficient stock");
                         $( "#jquery-message" ).removeClass( "green" ).addClass( "red" );
                         $("#jquery-message").show();
                     }else{

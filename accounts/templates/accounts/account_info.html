@@ -28,7 +28,9 @@
                     </tbody>
                 </table>
                 <button class="ui teal button" onclick="location.href='{% url 'accounts:change_email' %}';"><i class="at icon"></i>Change email</button>
+                {% if request.user.has_usable_password %}
                 <button class="ui teal button" onclick="location.href='{% url 'accounts:change_password' %}';"><i class="lock icon"></i>Change password</button>
+                {% endif %}
             </div>
         </div>
 

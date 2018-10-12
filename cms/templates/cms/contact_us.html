@@ -4,7 +4,7 @@
 
 {% block content %}
 <br>
-    <div class="ui container">
+    <div class="ui container" style="padding-right: 20px; padding-left: 20px;">
         <div class="row">
                 <h1>Contact us</h1>
         </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="column">
                 <h4>Visit us at our physical store:</h4>
-                <p>{{ contact_us.address }}&nbsp;-&nbsp;<a href="https://www.waze.com/ul?ll=14.562473%2C121.060577&navigate=yes&zoom=17">Navigate</a></p>
+                <p>{{ contact_us.address }}&nbsp;-&nbsp;<a href="https://www.waze.com/ul?ll=14.562473%2C121.060577&navigate=yes&zoom=17">Navigate via Waze</a></p>
                 <p><b>Facebook:&nbsp;</b><a href="{{ contact_us.fb_link }}">{{ contact_us.fb_link }}</a></p>
                 <p><b>FB Messenger:&nbsp;</b><a href="{{ contact_us.fb_messenger_link }}">{{ contact_us.fb_messenger_link }}</a></p>
                 <p><b>Email us at:&nbsp;</b>{{ contact_us.email }}</p>

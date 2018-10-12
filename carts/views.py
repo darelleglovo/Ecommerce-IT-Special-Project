@@ -136,6 +136,36 @@ class CartView(SingleObjectMixin, View):
         template = self.template_name
         return render(request, template, context)
 
+def cancel_order(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+    if billing_profile is not None:
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+        order_obj.shipping_address = None
+        order_obj.payment_type = None
+        order_obj.save()
+
+    return redirect("carts:cart")
+
+def cancel_mode_of_payment(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+    if billing_profile is not None:
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+        order_obj.payment_type = None
+        order_obj.save()
+
+    return redirect("carts:checkout")
+
+def cancel_address(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+    if billing_profile is not None:
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+        order_obj.shipping_address = None
+        order_obj.save()
+
+    return redirect("carts:checkout")
 
 
 def checkout_home(request):

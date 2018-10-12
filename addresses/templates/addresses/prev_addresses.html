@@ -1,4 +1,10 @@
 {% if address_qs.exists %}
+            <h2 class="ui  header">
+    {#                <i class="shipping fast icon"></i>#}
+                    <div class="content">
+                         - or select from your addresses
+                    </div>
+                </h2>
 
                 <form method="post" action="{{ action_url }}"> {% csrf_token %}
                     {% if next_url %}
