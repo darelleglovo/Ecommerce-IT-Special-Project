@@ -3,13 +3,29 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
+from django.http import Http404
 
 from . import forms
 from .models import GuestEmail
 from billing.models import BillingProfile
+from carts.models import Cart
+from addresses.models import Address
+
+from addresses.forms import AddressForm
 
 def logout_page(request):
     if request.user.is_authenticated:
+        cart_id = request.session.get("cart_id")
+        print(cart_id, "is cart")
+        if cart_id: # if exists
+            cart = Cart.objects.get(id=cart_id)
+            for cart_item in cart.cartitem_set.all():
+                #print(cart_item, cart_item.quantity, cart_item.item, cart_item.item.inventory,)
+                cart_item.item.inventory += cart_item.quantity # return items
+                cart_item.item.save()
+                cart_item.save()
+
+            cart.save()
         logout(request)
         return redirect("/login")
 
@@ -114,6 +130,37 @@ def change_password(request):
 
 def account_info(request):
     return render(request, 'accounts/account_info.html')
+
+def edit_address(request):
+    address_id = request.GET.get("address_id")
+    address_edit = request.GET.get("address_edit")
+    address_delete = request.GET.get("address_delete")
+    address_obj = Address.objects.get(id=address_id)
+    if request.user.is_authenticated:
+        if address_obj in request.user.billingprofile.address_set.all():
+            if address_edit:
+                form = AddressForm(instance=Address.objects.get(id=address_id))
+                if request.method == 'POST':
+                    form = AddressForm(request.POST or None)
+                    if form.is_valid():
+                        address_obj.address_line_1 = form.cleaned_data.get("address_line_1")
+                        address_obj.address_line_2 = form.cleaned_data.get("address_line_2")
+                        address_obj.city = form.cleaned_data.get("city")
+                        address_obj.country = form.cleaned_data.get("country")
+                        address_obj.state = form.cleaned_data.get("state")
+                        address_obj.postal_code = form.cleaned_data.get("postal_code")
+                        address_obj.save()
+                        return render(request, 'accounts/account_info.html', {'address_id': address_id, 'address_delete': address_delete, 'form': form})
+                    else:
+                        return render(request, 'accounts/change_address.html', {'address_id': address_id, 'address_delete': address_delete, 'form': form})
+            elif address_delete:
+                address_obj.delete()
+                return render(request, 'accounts/account_info.html', {'address_id': address_id, 'address_delete': address_delete})
+        else:
+            raise Http404
+    else:
+        raise Http404
+    return render(request, 'accounts/change_address.html', {'address_id': address_id, 'address_delete': address_delete, 'form': form})
 
 def change_email(request):
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)

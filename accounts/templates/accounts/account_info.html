@@ -34,6 +34,24 @@
             </div>
         </div>
 
+            <table class="ui definition unstackable table">
+                    <tbody>
+                        {% for address in request.user.billingprofile.address_set.all %}
+                        <form method="GET" action="{% url 'accounts:edit_address' %}">
+                            <tr>
+                                <td class="collapsing">Address #{{ forloop.counter }}</td>
+                                <td class="">
+                                    {{ address.address_line_1 }}, {{ address.address_line_2 }}, {{ address.city }}, {{ address.country }}, {{ address.state }}, {{ address.postal_code }}<br>
+                                <input type="hidden" name="address_id" value="{{ address.id }}">
+                                <button type="submit" name="address_edit" value=True>Edit</button>
+                                <button type="submit" name="address_delete" value=True>Delete</button>
+                                </td>
+                            </tr>
+                        </form>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
     </div>
 
 {% endblock %}

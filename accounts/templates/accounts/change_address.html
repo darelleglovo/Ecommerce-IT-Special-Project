@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load semanticui %}
+
+{% block content %}
+    <div class="ui container">
+        {{ address }}
+        {{ address_delete }}
+        <div class="ui raised segment">
+
+{#                {% if user.is_authenticated %}#}
+{#                    <h3 class="ui header">Hello {{ user.first_name }}</h3>#}
+{#                {% else %}#}
+{#                    <p class="ui" style="font-size: 20px;">Login</p>#}
+{#                {% endif %}#}
+
+                <div class="ui clearing divider"></div>
+                <form class="ui form" method="POST"> {% csrf_token %}
+                    {#    {{ form }}#}
+                    {% if next_url %}
+                        <input type="hidden" name="next" value="{{ next_url }}">
+                    {% endif %}
+                    {% if address_type %}
+                        <input type="hidden" name="address_type" value="{{ address_type }}">
+                    {% endif %}
+                    {% render_form form %}
+
+                    {% for message in messages %}
+                        <div class="ui negative message">
+                            <div class="header">
+                                Oops!!
+                            </div>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    <button class="ui teal fluid button" type="submit">Submit</button>
+                </form>
+            </div>
+
+    </div>
+
+{% endblock %}

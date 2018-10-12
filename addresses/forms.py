@@ -29,3 +29,4 @@ class AddressForm(forms.ModelForm):
 
     def clean_country(self):
         return "Philippines"
+

@@ -75,7 +75,10 @@ class CartView(SingleObjectMixin, View):
         item_added = False
         if item_id: # if exists
             item_instance = get_object_or_404(Product, id=item_id)
-            qty = int(request.GET.get("qty", 1))
+            try:
+                qty = int(request.GET.get("qty", 1))
+            except:
+                raise Http404
             try:
                 if qty < 1:
                     delete_item = True
@@ -87,6 +90,8 @@ class CartView(SingleObjectMixin, View):
                 if  item_instance.inventory <= 0:
                     qty = 0
                     out_of_stock = True
+                    cart_item.qty = 0
+                    cart_item.delete()
 
                     print('out of stock')
                     if request.is_ajax():

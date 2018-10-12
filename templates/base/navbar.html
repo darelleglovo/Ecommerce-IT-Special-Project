@@ -21,7 +21,7 @@
         {% endif %}
         <div class="right menu">
             {% if user.is_authenticated %}
-                <a class="ui item" href="/logout">
+                <a class="ui item btnLogout">
                     Welcome, {{ user.first_name }} |
                     Logout
                 </a>
@@ -41,6 +41,7 @@
     </div>
 </div>
 </div>
+
 
 
 

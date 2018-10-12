@@ -2,7 +2,7 @@ from django.db import models
 from billing.models import BillingProfile
 
 ADDRESS_TYPES = (
-    ('billing', 'Billing'),
+    ('billing', '-'),
     ('shipping', 'Shipping')
 )
 STATES = (
