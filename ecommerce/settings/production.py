@@ -88,6 +88,7 @@ TEMPLATES = [
         },
     },
 ]
+TEMPLATES[0]['OPTIONS']['context_processors'].append("products.context_processors.categories_processor")
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 

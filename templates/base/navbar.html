@@ -11,7 +11,7 @@
     <div class="ui container" style="background-color: black;">
     <div class="ui large secondary menu" style="background-color: white;">
 {#        <a class="item"><p class="mainlogo"><span style="color: #11D7D8;">Einghel's </span> <span style="color: #FD9AB6;">Collection</span></p></a>#}
-        <a class="item"style="padding: 0px;"><img src="{% static 'img/bruh.png' %}" style="width: 165px; height: 100px;"></a>
+        <a class="item"style="padding: 0px;" href="{% url 'products:home' %}"><img src="{% static 'img/bruh.png' %}" style="width: 165px; height: 100px;"></a>
         <a class="item" href="{% url 'products:home' %}">Products</a>
         <a class="item" href="{% url 'cms:about' %}">About us</a>
         <a class="item" href="{% url 'cms:contact' %}">Contact us</a>

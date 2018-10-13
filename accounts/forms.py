@@ -98,10 +98,14 @@ class RegisterForm(forms.Form):
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')
-        if last_name.isalpha():
-            return last_name
-        else:
-            raise forms.ValidationError("Letters only.")
+        for x in last_name:
+            if x.isalpha() or x == ' ':
+                continue
+            else:
+                raise forms.ValidationError("Letters only.")
+                break
+        last_name = re.sub(' +', ' ', last_name)
+        return last_name
 
     def clean_username(self):
         username = self.cleaned_data.get('username').lower()

@@ -52,20 +52,23 @@ class CartView(SingleObjectMixin, View):
     template_name = "carts/view.html"
 
     def get_object(self, *args, **kwargs):
-        self.request.session.set_expiry(0)
-        cart_id = self.request.session.get("cart_id")
-        if cart_id == None:
-            cart = Cart()
-            cart.save()
-            cart_id = cart.id
-            self.request.session["cart_id"] = cart_id
-        cart = Cart.objects.get(id=cart_id)
-        if self.request.user.is_authenticated:
-            cart.user = self.request.user  # user sending request
-            cart.save()
+        try:
+            self.request.session.set_expiry(0)
+            cart_id = self.request.session.get("cart_id")
+            if cart_id == None:
+                cart = Cart()
+                cart.save()
+                cart_id = cart.id
+                self.request.session["cart_id"] = cart_id
+            cart = Cart.objects.get(id=cart_id)
+            if self.request.user.is_authenticated:
+                cart.user = self.request.user  # user sending request
+                cart.save()
 
-        print(cart.user)
-        return cart
+            return cart
+        except:
+            del self.request.session['cart_id']
+            self.request.session['is_bank_transfer'] = False
 
     def get(self, request, *args, **kwargs):
         cart = self.get_object()
@@ -79,13 +82,18 @@ class CartView(SingleObjectMixin, View):
                 qty = int(request.GET.get("qty", 1))
             except:
                 raise Http404
+
             try:
                 if qty < 1:
                     delete_item = True
             except:
                 raise Http404
-            cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
-            item_instance.inventory
+
+            try: # changes
+                cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
+            except:
+                return redirect("carts:cart")
+
             if created:
                 if  item_instance.inventory <= 0:
                     qty = 0
@@ -220,6 +228,9 @@ def checkout_home(request):
                     did_charge, crg_msg = billing_profile.charge(order_obj)
                     if did_charge:
                         order_obj.mark_paid()
+                        order_obj.cart.is_done = True # changes
+                        order_obj.cart.save()# changes
+                        order_obj.save()# changes
                         del request.session['cart_id']
                         if not billing_profile.user:
                             billing_profile.set_cards_inactive()
@@ -248,6 +259,8 @@ def checkout_home(request):
                         return redirect("carts:checkout")
             elif order_obj.payment_type == "bank_deposit":
                 order_obj.status = 'waiting_for_payment'
+                order_obj.cart.is_done = True # changes
+                order_obj.cart.save()# changes
                 order_obj.save()
                 del request.session['cart_id']
                 if not billing_profile.user:

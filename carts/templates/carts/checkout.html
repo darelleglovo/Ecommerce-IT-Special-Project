@@ -176,15 +176,17 @@
                             <td>₱{{ object.total }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="right aligned">
-                                <form class="form" method="POST" action=""> {% csrf_token %}
-                                    <button class="ui button" type="submit">Finalize checkout</button>
-                                </form>
+                            <td colspan="" class="right aligned">
                                 <form class="form" method="POST" action="{% url 'carts:cancel' %}"> {% csrf_token %}
                                     <button class="ui button" type="submit">Cancel</button>
                                 </form>
                                 <form class="form" method="POST" action="{% url 'carts:cancel_mop' %}"> {% csrf_token %}
                                     <button class="ui button" type="submit">Back</button>
+                                </form>
+                            </td>
+                            <td colspan="" class="right aligned">
+                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                    <button class="ui button" type="submit">Finalize checkout</button>
                                 </form>
                             </td>
                         </tr>
@@ -194,7 +196,7 @@
             {% endif %}
         {% elif object.payment_type == "bank_deposit" %}
             <div class="ui five wide column">
-                    <table class="ui celled striped table">
+                    <table class="ui celled striped unstackable table">
                         <thead>
                         <tr>
                             <th colspan="2">
@@ -239,15 +241,17 @@
                             <td>₱{{ object.total }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="right aligned">
-                                <form class="form" method="POST" action=""> {% csrf_token %}
-                                    <button class="ui button" type="submit">Finalize checkout</button>
-                                </form>
+                            <td colspan="" class="">
                                 <form class="form" method="POST" action="{% url 'carts:cancel' %}"> {% csrf_token %}
                                     <button class="ui button" type="submit">Cancel</button>
                                 </form>
                                 <form class="form" method="POST" action="{% url 'carts:cancel_mop' %}"> {% csrf_token %}
                                     <button class="ui button" type="submit">Back</button>
+                                </form>
+                            </td>
+                            <td colspan="" class="right aligned">
+                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                    <button class="ui button" type="submit">Finalize checkout</button>
                                 </form>
                             </td>
                         </tr>

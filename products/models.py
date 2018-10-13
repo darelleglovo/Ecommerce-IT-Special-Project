@@ -92,7 +92,7 @@ class Product(models.Model):
         blank=True,
         on_delete=models.SET_NULL
         )
-    price = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
+    price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     cropping = ImageRatioField('image', '640x640')
     active =  models.BooleanField(default=True)

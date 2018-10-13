@@ -4,7 +4,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0", shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
     <title>Welcome to Einghel's Collection</title>
     {% include 'base/css.html' %}
     {% block base_head %}{% endblock %}<!-- custom css block for home_page.html -->
@@ -40,6 +40,21 @@
                         </form>
                     </a>
                     <a class="header item">Einghel's Collection</a>
+
+                    <div class="ui vertical accordion item">
+                      <div class="item">
+                        <a class="active title">
+                            <i class="dropdown icon"></i>
+                            Categories
+                        </a>
+                        <div class="content">
+                            {% for obj in categories %}
+                                <a class="item" href="{{ obj.get_absolute_url }}">{{ obj.title }}</a>
+                            {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+
                     <a class="item" href="{% url 'products:home' %}">Products</a>
                     <a class="item" href="{% url 'cms:about' %}">About us</a>
                     <a class="item" href="{% url 'cms:contact' %}">Contact us</a>
@@ -51,27 +66,30 @@
                         <div id="cart-count-badge" class="ui teal left pointing label cart-count-badge"></div>
                         Cart
                     </a>
-                    <div class="ui dropdown item">
-                        Categories
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            {% for obj in categories %}
-                                <div class="item">
-                                    <div class=""><a class="" href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></div>
-                                    <div class="menu">
-                                        {% for sub in subcategories %}
-                                            {% if sub.category|slugify == obj.title|slugify %}
-                                                <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>
-                                            {% endif %}
 
 
-                                        {% endfor %}
 
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    <!--<div class="ui dropdown item">-->
+                    <!--    Categories-->
+                    <!--    <i class="dropdown icon"></i>-->
+                    <!--    <div class="menu">-->
+                    <!--        {% for obj in categories %}-->
+                    <!--            <div class="item">-->
+                    <!--                <div class=""><a class="" href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></div>-->
+                    <!--                <div class="menu">-->
+                    <!--                    {% for sub in subcategories %}-->
+                    <!--                        {% if sub.category|slugify == obj.title|slugify %}-->
+                    <!--                            <a class="item" href="{% url 'products:list_products_by_subcategory' sub.slug %}">{{ sub.title }}</a>-->
+                    <!--                        {% endif %}-->
+
+
+                    <!--                    {% endfor %}-->
+
+                    <!--                </div>-->
+                    <!--            </div>-->
+                    <!--        {% endfor %}-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     {% if user.is_authenticated %}
                         <a class="ui item btnLogout">
                             Welcome, {{ user.first_name }} |

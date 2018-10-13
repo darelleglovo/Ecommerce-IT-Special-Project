@@ -111,6 +111,23 @@
             </td>
         </tr>
     </table>
+    <br>
+    <table>
+        <tr>
+            <th colspan="2">Shipping Details</th>
+        </tr>
+        <tr>
+            <td>Shipping Address:</td>
+            <td>
+                {{ object.shipping_address.address_line_1 }}<br>
+                {{ object.shipping_address.address_line_2 }}<br>
+                {{ object.shipping_address.city }}<br>
+                {{ object.shipping_address.country }}<br>
+                {{ object.shipping_address.state|title }}<br>
+                {{ object.shipping_address.postal_code }}
+            </td>
+        </tr>
+    </table>
 
 
 

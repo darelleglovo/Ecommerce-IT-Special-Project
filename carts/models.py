@@ -72,6 +72,7 @@ class Cart(models.Model):
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     subtotal = models.DecimalField(max_digits=50, decimal_places=2, null=True)
     total = models.DecimalField(max_digits=50, decimal_places=2, null=True)
+    is_done = models.BooleanField(default=False) # changes
 
     objects = CartManager()
 

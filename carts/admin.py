@@ -11,8 +11,9 @@ class CartAdmin(admin.ModelAdmin):
         CartItemInline
     ]
     readonly_fields = ('timestamp',)
+    list_display = ['__str__', 'is_done']
     class Meta:
         model = Cart
 
-admin.site.register(Cart, CartAdmin)
-admin.site.register(CartItem)
+#admin.site.register(Cart, CartAdmin)
+#admin.site.register(CartItem)

@@ -31,26 +31,30 @@
                 {% if request.user.has_usable_password %}
                 <button class="ui teal button" onclick="location.href='{% url 'accounts:change_password' %}';"><i class="lock icon"></i>Change password</button>
                 {% endif %}
-            </div>
-        </div>
-
-            <table class="ui definition unstackable table">
+                <br>
+                <h2><i class="address book icon"></i> My Addresses</h2>
+                <table class="ui definition unstackable table">
                     <tbody>
                         {% for address in request.user.billingprofile.address_set.all %}
                         <form method="GET" action="{% url 'accounts:edit_address' %}">
                             <tr>
                                 <td class="collapsing">Address #{{ forloop.counter }}</td>
                                 <td class="">
-                                    {{ address.address_line_1 }}, {{ address.address_line_2 }}, {{ address.city }}, {{ address.country }}, {{ address.state }}, {{ address.postal_code }}<br>
+                                    {{ address.address_line_1|title }}, {{ address.address_line_2|title }}, {{ address.city|title }}, {{ address.country|title }}, {{ address.state|title }}, {{ address.postal_code|title }}<br>
                                 <input type="hidden" name="address_id" value="{{ address.id }}">
-                                <button type="submit" name="address_edit" value=True>Edit</button>
-                                <button type="submit" name="address_delete" value=True>Delete</button>
+
+                                </td>
+                                <td>
+                                    <button class="ui teal fluid mini button" type="submit" name="address_edit" value=True style="margin-bottom:5px;">Edit</button>
+                                    <button class="ui teal fluid mini button" type="submit" name="address_delete" value=True>Delete</button>
                                 </td>
                             </tr>
                         </form>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
 
     </div>
 

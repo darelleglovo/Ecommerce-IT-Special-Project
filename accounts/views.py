@@ -26,6 +26,7 @@ def logout_page(request):
                 cart_item.save()
 
             cart.save()
+            cart.delete()
         logout(request)
         return redirect("/login")
 
