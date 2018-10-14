@@ -63,7 +63,7 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Subcategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length = 400)
     slug = models.SlugField(blank=True)
 
