@@ -5,6 +5,17 @@ from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.http import Http404
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+
+
 from . import forms
 from .models import GuestEmail
 from billing.models import BillingProfile
@@ -105,9 +116,55 @@ def register_page(request):
             username = form.cleaned_data.get("username")
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            new_user = User.objects.create_user(username, email, password, first_name=first_name, last_name=last_name)
-            return redirect('accounts:login')
+            new_user = User.objects.create_user(username, email, password, first_name=first_name, last_name=last_name, is_active=False)
+            #return redirect('accounts:login')
+
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('accounts/acc_active_email.html', {
+                'user': new_user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(new_user.pk)).decode(),
+                'token': account_activation_token.make_token(new_user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                mail_subject, message, to=[to_email]
+            )
+            email.send()
+
+            context= {
+                'title': "Just one more step..",
+                'message': "We've sent you an email. Please confirm your email address to complete the registration and let's start shopping!"
+            }
+
+            return render(request, 'accounts/account_activation_messages.html', context)
+
         return render(request, "accounts/register.html", context)
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        # return redirect('home')
+        context = {
+            'title': "Your account is activated",
+            'message': "Great! You can now login and start shopping!!"
+        }
+
+        return render(request, 'accounts/account_activation_messages.html', context)
+    else:
+        context = {
+            'title': "Oops..",
+            'message': "Your activation link seems to be invalid.."
+        }
+
+        return render(request, 'accounts/account_activation_messages.html', context)
 
 def change_password(request):
     if request.user.is_authenticated:

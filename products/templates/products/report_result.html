@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'css/CSS/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/ui-table/table.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/ui-table/table.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/semantic-ui-calendar/calendar.min.css' %}" rel="stylesheet" type="text/css"/>
+    <meta charset="utf-8">
+    <title>Reports and Critical Levels</title>
+</head>
+<body>
+
+<br/>
+<div class="ui container">
+
+    <table class="ui collapsing fixed single line celled table">
+        {% if filtered_objects is None %}
+        <h1>No reports found</h1>
+        {% elif filtered_objects %}
+        <h1>Report type: {{report_type|title}}</h1>
+        <h4>From: {{ date_from }} | To: {{ date_to }}</h4>
+
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Items</th>
+            <th>Status</th>
+            <th>Shipping Status</th>
+            <th>Payment Type</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in filtered_objects %}
+        <tr>
+            <td>{{order.order_id|upper}}</td>
+            <td>
+                {% for i in order.cart.cartitem_set.all %}
+                <b>{{ i.item }} - {{ i.quantity }}pcs</b><br/>
+                {% endfor %}
+            </td>
+            <td>{{order.status}}</td>
+            <td>{{order.shipping_status}}</td>
+            <td>{{order.payment_type}}</td>
+            <td>₱{{order.total}}.00</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form method="GET" action="{% url 'products:reports_result' %}">
+        <input type="hidden" name="report_type" value="{{report_type}}">
+        <input type="hidden" name="date_from" value="{{date_from}}">
+        <input type="hidden" name="date_to" value="{{date_to}}">
+        <button class="ui button active" type="submit" name="download_report" value=True>Download report</button>
+    </form>
+    {% else %}
+    <h1>No results for: {{report_type|title}}</h1>
+    <h4>From: {{ date_from }} | To: {{ date_to }}</h4>
+    {% endif %}
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'js/semantic-ui-calendar/calendar.min.js' %}"></script>
+<script src="{% static 'js/JS/script.js' %}"></script>
+</body>
+</html>
+
+

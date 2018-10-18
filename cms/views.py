@@ -15,3 +15,6 @@ def contact(request):
         "contact_us": contact_us
     }
     return render(request, "cms/contact_us.html", context)
+
+def terms(request):
+    return render(request, "cms/terms_and_condition.html")

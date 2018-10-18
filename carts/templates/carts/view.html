@@ -39,14 +39,14 @@
                     <td class="collapsing" data-tooltip="Remove" data-inverted=""><i class="red times icon" onclick="location.href='{{ item.remove }}'"></i></td>
                     <td class="collapsing">{{ forloop.counter }}</td>
                     <td><a href="{{ item.get_absolute_url }}">{{ item }}</a></td>
-                    <td class="collapsing">₱{{ item.item.price }}</td>
+                    <td class="collapsing">₱{{ item.item.price }}.00</td>
                     <td class="collapsing">{{ item.quantity }}</td>
-                    <td>₱{{ item.line_item_total }}</td>
+                    <td>₱{{ item.line_item_total }}.00</td>
                 </tr>
                 {% endfor %}
                 <tr>
                     <td colspan="5"></td>
-                    <td><b>Subtotal: </b>₱{{ object.subtotal }}</td>
+                    <td><b>Subtotal: </b>₱{{ object.subtotal }}.00</td>
                 </tr>
 {#                <tr>#}
 {#                    <td colspan="5"></td>#}

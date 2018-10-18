@@ -27,6 +27,21 @@
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 
 <script>
+    $("#frmRegister").submit(function(e) {
+
+        if ($(this).find('input[name="terms"]')[0].checked === false) {
+            e.preventDefault();
+            swal({
+              type: 'error',
+              text: 'Please accept the terms and conditions!',
+            })
+            return false;
+        }
+    });
+</script>
+
+
+<script>
     $( ".btnLogout" ).click(function() {
         swal({
           title: 'Are you sure you want to logout?',

@@ -80,6 +80,7 @@ class Order(models.Model):
     total = models.DecimalField(default=0, max_digits=100, decimal_places=2)
     date_added = models.DateTimeField(auto_now_add=True, auto_now=False)
     active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False) #changes
 
     objects = OrderManager()
 

@@ -62,10 +62,10 @@
                     {{ i.quantity }}
                 </td>
                 <td>
-                    ₱{{ i.item.price }}
+                    ₱{{ i.item.price }}.00
                 </td>
                 <td>
-                    ₱{{ i.line_item_total }}
+                    ₱{{ i.line_item_total }}.00
                 </td>
 
             </tr>
@@ -74,7 +74,7 @@
             <td colspan="3" align="right" style="text-align:right">
                 <b>Sub-total:</b>
             </td>
-                ₱{{ object.cart.total }}
+                ₱{{ object.cart.total }}.00
             </td>
         </tr>
         <tr>
@@ -82,7 +82,7 @@
                 <b>Shipping Fee ({{ object.shipping_address.state | title }} area):</b>
             </td>
             <td>
-               ₱{{ object.shipping_total }}
+               ₱{{ object.shipping_total }}.00
             </td>
         </tr>
         <tr>
@@ -90,7 +90,7 @@
                 <b>Total:</b>
             </td>
             <td>
-                ₱{{ object.total }}
+                ₱{{ object.total }}.00
             </td>
         </tr>
     </table>

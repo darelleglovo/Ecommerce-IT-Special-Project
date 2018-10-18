@@ -1,0 +1,12 @@
+{% extends 'admin/base_site.html' %}
+
+{% load static %}
+{% load  critical_level %}
+
+{% block nav-global %} <!-- changes -->
+<a href="{% url 'products:reports_page' %}" target="_blank">Reports and Critical level items({% get_critical_level %})</a>
+
+
+
+{% endblock %}
+

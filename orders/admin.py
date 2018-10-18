@@ -19,8 +19,10 @@ make_shipped.short_description = "Mark selected product as shipped"
 make_not_shipped.short_description = "Mark selected product as not yet shipped"
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'status', 'shipping_status', 'payment_type']
-    list_filter = ['status', 'shipping_status', 'payment_type']
+    list_display = ['__str__', 'status', 'shipping_status', 'payment_type', 'timestamp']
+    list_filter = ['status', 'shipping_status', 'payment_type', 'timestamp']
+
+    readonly_fields = ('timestamp',) #changes
 
     actions = [make_shipped, make_not_shipped]
     class Meta:

@@ -33,11 +33,7 @@
                                     </button>
                                 </div>
                             </div>
-                            {% if product.inventory <= 5 %}
-                                <p style="padding: 5px">{{ product.inventory }} stocks left.</p>
-                            {% else %}
-                                <br><br>
-                            {% endif %}
+                            <p style="padding: 5px">{{ product.inventory }} stocks left.</p>
                         </div>
 {#                        {% if object in items.all %}#}
 {#                            <button id="submit-btn" class="ui basic negative button" type="submit">#}

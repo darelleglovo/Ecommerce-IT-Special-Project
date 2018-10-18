@@ -165,15 +165,15 @@
                         </tr>
                         <tr>
                             <td>Cart Total:</td>
-                            <td>₱{{ object.cart.total }}</td>
+                            <td>₱{{ object.cart.total }}.00</td>
                         </tr>
                         <tr>
                             <td>Shipping Total:</td>
-                            <td>₱{{ object.shipping_total }} ({{ object.shipping_address.state | title }})</td>
+                            <td>₱{{ object.shipping_total }}.00 ({{ object.shipping_address.state | title }})</td>
                         </tr>
                         <tr>
                             <td>Order Total:</td>
-                            <td>₱{{ object.total }}</td>
+                            <td>₱{{ object.total }}.00</td>
                         </tr>
                         <tr>
                             <td colspan="" class="right aligned">
@@ -185,7 +185,11 @@
                                 </form>
                             </td>
                             <td colspan="" class="right aligned">
-                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                <form id="frmRegister" class="form" method="POST" action=""> {% csrf_token %}
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="terms">
+                                        <label>I agree to <a href="{% url 'cms:terms-and-conditions' %}" target="_blank">Terms and Conditions</a></label>
+                                    </div>
                                     <button class="ui button" type="submit">Finalize checkout</button>
                                 </form>
                             </td>
@@ -230,15 +234,15 @@
                         </tr>
                         <tr>
                             <td>Cart Total:</td>
-                            <td>₱{{ object.cart.total }}</td>
+                            <td>₱{{ object.cart.total }}.00</td>
                         </tr>
                         <tr>
                             <td>Shipping Total:</td>
-                            <td>₱{{ object.shipping_total }} ({{ object.shipping_address.state | title }})</td>
+                            <td>₱{{ object.shipping_total }}.00 ({{ object.shipping_address.state | title }})</td>
                         </tr>
                         <tr>
                             <td>Order Total:</td>
-                            <td>₱{{ object.total }}</td>
+                            <td>₱{{ object.total }}.00</td>
                         </tr>
                         <tr>
                             <td colspan="" class="">
@@ -250,7 +254,11 @@
                                 </form>
                             </td>
                             <td colspan="" class="right aligned">
-                                <form class="form" method="POST" action=""> {% csrf_token %}
+                                <form id="frmRegister" class="form" method="POST" action=""> {% csrf_token %}
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="terms">
+                                        <label>I agree to <a href="{% url 'cms:terms-and-conditions' %}" target="_blank">Terms and Conditions</a></label>
+                                    </div>
                                     <button class="ui button" type="submit">Finalize checkout</button>
                                 </form>
                             </td>

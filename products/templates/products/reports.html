@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'css/CSS/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/ui-table/table.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/ui-table/table.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/semantic-ui-calendar/calendar.min.css' %}" rel="stylesheet" type="text/css"/>
+    <meta charset="utf-8">
+    <title>Reports and Critical Levels</title>
+</head>
+<body>
+
+<br/>
+<div class="ui container">
+    <h1>Reports</h1>
+
+    <form method="GET" action="{% url 'products:reports_result' %}">
+        <div class="ui form">
+            <select class="ui dropdown" name="report_type">
+                <option value="unpaid_orders">Unpaid orders</option>
+                <option value="paid_orders">Paid orders</option>
+                <option value="shipped_items">Shipped orders</option>
+                <option value="not_yet_shipped">Not yet shipped orders</option>
+                <option value="canceled_orders">Canceled orders</option>
+                <option value="all_transactions">All orders</option>
+
+            </select>
+            <br>
+            <div class="two fields">
+                <div class="field">
+                    <label>Start date</label>
+                    <div class="ui calendar" id="rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="Start" name="date_from">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>End date</label>
+                    <div class="ui calendar" id="rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="End" name="date_to">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="ui button active" type="submit">Check for reports</button>
+            <br>
+            <br>
+        </div>
+    </form>
+    <form method="GET" action="{% url 'products:reports_result' %}">
+        <button class="ui button active" type="submit" name="download_product_masterlist" value=True>Download Product masterlist</button>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="ui red message">
+                {{message}}
+            </div>
+       {% endfor %}
+    {% endif %}
+
+
+    <h1>Items on Critical Level</h1>
+    <table class="ui celled unstackable table">
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Price</th>
+            <th>Inventory</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in critical_level %}
+        <tr>
+            <td data-label="Product Name"><a href="{% url 'admin:products_product_change' product.id %}">{{ product.title }}</a></td>
+            <td data-label="Category">{{ product.category }}</td>
+            <td data-label="Subcategory">{{ product.subcategory }}</td>
+            <td data-label="Price">₱{{ product.price }}.00</td>
+            <td data-label="Quantity">{{ product.inventory }} left</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'js/semantic-ui-calendar/calendar.min.js' %}"></script>
+<script src="{% static 'js/JS/script.js' %}"></script>
+</body>
+</html>
